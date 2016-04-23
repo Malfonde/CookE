@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_recipe_menu_button"
+        android:icon="@drawable/add2"
+        android:showAsAction="always"
+        android:title="add">
+
+
+      <!--  <menu>
+            <item
+                android:id="@+id/menuSortNewest"
+                android:title="" />
+            <item
+                android:id="@+id/menuSortRating"
+                android:title="Sort by rating" />
+        </menu>-->
+
+        </item>
+
+    <item
+        android:id="@+id/confirm_button"
+        android:icon="@drawable/check2"
+        android:showAsAction="always"
+        android:title="confirm">
+    </item>
+    <item
+        android:id="@+id/edit_recipe_menu_button"
+        android:icon="@drawable/pencil"
+        android:showAsAction="always"
+        android:title="add"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/delete_recipe_menu_button"
+        android:icon="@drawable/delete_icon"
+        android:showAsAction="always"
+        android:title="delete"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/Favorites_menu_button"
+        android:icon="@drawable/recipe_book4"
+        android:showAsAction="always"
+        android:title="Favorties"
+        android:visible="true"
+        />
+    <item
+        android:id="@+id/beforeRating_menu_button"
+        android:icon="@drawable/greyed_star"
+        android:showAsAction="always"
+        android:title="notRatedYet"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/afterRating_menu_button"
+        android:icon="@drawable/golden_star"
+        android:showAsAction="always"
+        android:title="rated"
+        android:visible="false"
+        />
+    <item
+        android:id="@+id/homeRecipeBook"
+        android:icon="@drawable/recipe_book5"
+        android:showAsAction="always"
+        android:title="home"
+        android:visible="true"
+        />
+    <item
+        android:id="@+id/browseForRecipes"
+        android:icon="@drawable/search2"
+        android:showAsAction="always"
+        android:title="broese"
+        android:visible="true"
+        />
+
+
+
+
+</menu>
