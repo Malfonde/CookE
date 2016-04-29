@@ -31,16 +31,7 @@ public class BrowseRecipesFragment extends Fragment
     private RecipeViewDetailsFragment fragment;
     private EditText input_browseRecipes;
     ProgressDialog AddOrRemoveFavoritesDialog;
-
-    private User _user;
-
-    private User currentUser()
-    {
-        if(_user == null)
-            _user = Model.instance(getResources(),getContext()).GetCurrentUser();
-        return _user;
-    }
-
+    private String UserID;
 
     public BrowseRecipesFragment()
     {
@@ -55,6 +46,7 @@ public class BrowseRecipesFragment extends Fragment
         getActivity().setTitle(TITLE);
         AddOrRemoveFavoritesDialog = new ProgressDialog(getContext());
         AddOrRemoveFavoritesDialog.setCancelable(true);
+        UserID = getArguments().getString("User_ID");
     }
 
     @Override
@@ -184,8 +176,7 @@ public class BrowseRecipesFragment extends Fragment
 
     private void AddOrRemoveFromFavorites(Recipe recipe, int position)
     {
-
-        ArrayList<Recipe> favorites = Model.instance(getResources(),getContext()).GetUserFavoriteRecipesById(currentUser().getId());
+        ArrayList<Recipe> favorites = Model.instance(getContext()).GetUserFavoriteRecipesById(UserID);
 
         ArrayList objIds = new ArrayList();
         for (Recipe favorite : favorites)
@@ -195,11 +186,11 @@ public class BrowseRecipesFragment extends Fragment
 
         if(objIds.contains(recipe.getObjectID()))
         {
-            Model.instance(getResources(),getContext()).RemoveRecipeFromUserFavorites(recipe);
+            Model.instance(getContext()).RemoveRecipeFromUserFavorites(recipe);
         }
         else
         {
-            Model.instance(getResources(),getContext()).AddRecipeToFavorites(recipe);
+            Model.instance(getContext()).AddRecipeToFavorites(recipe);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.izik.recipebook;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -15,28 +14,15 @@ import java.util.List;
 
 public class Model
 {
-
     private static final String FAVORITES = "Favorites";
     private static final String USERRECIPEBOOK = "RecipeBookUser";
-    private static Resources resources;
     private static  Model instance = new Model();
-
     private User _user;
-
-    private User currentUser()
-    {
-        if(_user == null)
-            _user = Model.instance(resources,mContext).GetCurrentUser();
-        return _user;
-    }
-
     private ArrayList<Ingredient> ingrediants = new ArrayList<>();
     private ArrayList<Recipe> allRecipes = new ArrayList<>();
-    //private ArrayList<Recipe> userFavoriteRecipes = new ArrayList<>();
     private ArrayList<Recipe> allCurrentUserRecipes = new ArrayList<>();
     private static OnModelCompletedOperationListener mListener;
     private static Context mContext;
-
     private static final String USER_ID = "User_ID";
     private static final String INGREDIENTS = "Ingredients";
     private static final String DESC = "Description";
@@ -52,7 +38,60 @@ public class Model
 
     }
 
-    public static Model instance(Resources res ,Context context)
+    private User AssignCurrentUser()
+    {
+        final User user = new User(mContext);
+        final ParseQuery query = new ParseQuery(USERRECIPEBOOK);
+        query.whereEqualTo(USER_ID, user.getId());
+        ParseObject obj = null;
+
+        try
+        {
+            obj = query.getFirst();
+        }
+        catch (ParseException e)
+        {
+            if(e.getCode() == 101)
+            {
+                SaveCurrentUser(user);
+                return user;
+            }
+
+            WriteParseExceptionToLog(e);
+        }
+
+        if(obj != null)
+        {
+            ParseRelation<ParseObject> favoritesRelation = obj.getRelation(FAVORITES);
+
+            favoritesRelation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e != null) {
+                        Log.e("RecipeBook", e.getMessage());
+                    } else {
+                        ArrayList<Recipe> output = new ArrayList<Recipe>();
+
+                        for (ParseObject obj : objects) {
+                            ParseQuery favoritesQuery = new ParseQuery("Recipe");
+                            favoritesQuery.whereEqualTo(OBJECT_ID, obj.getObjectId());
+                            output.add(GetRecipesByQuery(query).get(0));
+                        }
+
+                        user.setFavoritRecipes(output);
+                    }
+                }
+            });
+
+            user.setObjectId(obj.getObjectId());
+        }
+
+
+        _user = user;
+        return _user;
+    }
+
+    public static Model instance(Context context)
     {
         if (context instanceof OnModelCompletedOperationListener)
         {
@@ -65,8 +104,6 @@ public class Model
         }
 
         mContext = context;
-
-        resources = res;
         return instance;
     }
 
@@ -117,11 +154,10 @@ public class Model
         }
     }
 
-
     public void AddOrRemoveRecipeToFavorites(Recipe recipe, boolean isAddOperation)
     {
         ParseQuery query = new ParseQuery(USERRECIPEBOOK);
-        query.whereEqualTo(OBJECT_ID, currentUser().getObjectId());
+        query.whereEqualTo(OBJECT_ID, GetCurrentUser().getObjectId());
 
         try
         {
@@ -382,55 +418,9 @@ public class Model
 
     public User GetCurrentUser()
     {
-        final User user = new User(mContext);
-        final ParseQuery query = new ParseQuery(USERRECIPEBOOK);
-        query.whereEqualTo(USER_ID, user.getId());
-        ParseObject obj = null;
-
-        try
-        {
-            obj = query.getFirst();
-        }
-        catch (ParseException e)
-        {
-            if(e.getCode() == 101)
-            {
-                SaveCurrentUser(user);
-                return user;
-            }
-
-            WriteParseExceptionToLog(e);
-        }
-
-        if(obj != null)
-        {
-            ParseRelation<ParseObject> favoritesRelation = obj.getRelation(FAVORITES);
-
-            favoritesRelation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
-                    if (e != null) {
-                        Log.e("RecipeBook", e.getMessage());
-                    } else {
-                        ArrayList<Recipe> output = new ArrayList<Recipe>();
-
-                        for (ParseObject obj : objects) {
-                            ParseQuery favoritesQuery = new ParseQuery("Recipe");
-                            favoritesQuery.whereEqualTo(OBJECT_ID, obj.getObjectId());
-                            output.add(GetRecipesByQuery(query).get(0));
-                        }
-
-                        user.setFavoritRecipes(output);
-                    }
-                }
-            });
-
-            user.setObjectId(obj.getObjectId());
-        }
-
-
-
-        return user;
+        if(_user == null)
+            _user = Model.instance(mContext).AssignCurrentUser();
+        return _user;
     }
 
     private void SaveCurrentUser(User user)

@@ -82,21 +82,21 @@ public class ImageAdapter extends BaseAdapter
 
     public  ArrayList<Recipe> SetRecipesImagesArrayForUser(String id)
     {
-        ArrayList<Recipe> userRecipes = Model.instance(resources,mContext).GetAllUserRecipesByID(id);
+        ArrayList<Recipe> userRecipes = Model.instance(mContext).GetAllUserRecipesByID(id);
         mThumbIds = GetAllImagesFromArrayList(userRecipes);
         return userRecipes;
     }
 
     public  ArrayList<Recipe> setRecipesFromAllUsers()
     {
-        ArrayList<Recipe> allRecipes = Model.instance(resources,mContext).GetAllUsersRecipes();
+        ArrayList<Recipe> allRecipes = Model.instance(mContext).GetAllUsersRecipes();
         mThumbIds = GetAllImagesFromArrayList(allRecipes);
         return  allRecipes;
     }
 
     public ArrayList<Recipe> setRecipesBy(String likeExpression, boolean findThisUserRecipes) {
 
-        ArrayList<Recipe> likeExpressionRecipes = Model.instance(resources, mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);
+        ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }
@@ -127,7 +127,7 @@ public class ImageAdapter extends BaseAdapter
 
     public ArrayList<Recipe> setFavoriteRecipesByUserId(String UserId)
     {
-        ArrayList<Recipe> favorites = Model.instance(resources,mContext).GetUserFavoriteRecipesById(UserId);
+        ArrayList<Recipe> favorites = Model.instance(mContext).GetUserFavoriteRecipesById(UserId);
         mThumbIds = GetAllImagesFromArrayList(favorites);
 
         return favorites;
@@ -135,7 +135,7 @@ public class ImageAdapter extends BaseAdapter
 
     public ArrayList<Recipe> setUserFavoriteRecipesByExpression(String userId, String expression)
     {
-        ArrayList<Recipe> likeExpressionRecipes = Model.instance(resources, mContext).GetUserFavoriteRecipesByLikeExp(userId, expression);
+        ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetUserFavoriteRecipesByLikeExp(userId, expression);
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }

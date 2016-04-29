@@ -102,8 +102,8 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         AddOrRemoveFavoritesDialog = new ProgressDialog(this);
         AddOrRemoveFavoritesDialog.setCancelable(true);
 
-
-        this.User = Model.instance(getResources(),this).GetCurrentUser();
+        //Should happen once
+        this.User = Model.instance(this).GetCurrentUser();
 
         PropertiesReader propertyReader = new PropertiesReader(this);
         Properties properties = propertyReader.getProperties("UserInfo.Properties");
@@ -228,7 +228,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     private void DeleteRcipe(Recipe recipe, int position)
     {
         User.getUserRecipes().remove(position);
-        Model.instance(getApplication().getResources(), this).DeleteRecipe(recipe);
+        Model.instance(this).DeleteRecipe(recipe);
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
         imageAdapter.notifyDataSetChanged();
     }
@@ -295,6 +295,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     {
         BrowseRecipesFragment fragment = new BrowseRecipesFragment();
         final Bundle bundle = new Bundle();
+        bundle.putString("User_ID",User.getObjectId());
         fragment.setArguments(bundle);
         ShowFragment(fragment);
     }
@@ -305,12 +306,12 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         if(action == USER_ACTION.ADD)
         {
             User.getUserRecipes().add(recipe);
-            Model.instance(getApplication().getResources(), this).AddRecipe(recipe);
+            Model.instance(this).AddRecipe(recipe);
 
         }
         if(action == USER_ACTION.EDIT)
         {
-            Model.instance(getApplication().getResources(), this).EditRecipe(recipe);
+            Model.instance(this).EditRecipe(recipe);
         }
 
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
