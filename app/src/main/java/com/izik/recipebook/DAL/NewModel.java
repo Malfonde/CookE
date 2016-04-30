@@ -33,8 +33,16 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.100:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.1.25:8080/saveRecipe",jsonRecipe);
 
+    }
+
+    public void EditRecipe(Recipe recipe)
+    {
+        JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
+        ServerRequest serverRequest = new ServerRequest();
+
+        JSONObject json = serverRequest.getJSON("http://192.168.1.25:8080/saveRecipe",jsonRecipe);
     }
 
     //endregion
@@ -43,15 +51,15 @@ public class NewModel
 
     private JSONObject ConvertRecipeToJSON(Recipe recipe)
     {
-        JSONObject student1 = new JSONObject();
+        JSONObject jsonRecipe = new JSONObject();
         try {
 
-            student1.put("name", recipe.getName());
-            student1.put("description", recipe.getDescription());
-            student1.put("cookingInstructions", recipe.getCookingInstructions());
-            student1.put("servingInstructions", recipe.getServingInstructions());
-            student1.put("userID", recipe.getUserId());
-            student1.put("image", recipe.getImage());
+            jsonRecipe.put("name", recipe.getName());
+            jsonRecipe.put("description", recipe.getDescription());
+            jsonRecipe.put("cookingInstructions", recipe.getCookingInstructions());
+            jsonRecipe.put("servingInstructions", recipe.getServingInstructions());
+            jsonRecipe.put("userID", recipe.getUserId());
+            jsonRecipe.put("image", recipe.getImage());
 
             JSONArray ingredients = new JSONArray();
 
@@ -64,14 +72,14 @@ public class NewModel
                 ingredients.put(ingredientjson);
             }
 
-            student1.put("ingredients", ingredients.toString());
+            jsonRecipe.put("ingredients", ingredients.toString());
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return student1;
+        return jsonRecipe;
     }
 
 
