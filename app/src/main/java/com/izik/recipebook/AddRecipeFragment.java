@@ -191,17 +191,16 @@ public class AddRecipeFragment extends Fragment
         recipe.setImage(picturePathTag);
         recipe.setCookingInstructions(this.cookingInstructionInput.getText().toString());
         recipe.setServingInstructions(this.servingInstructionsInput.getText().toString());
+        ArrayList<Ingredient> newIngredients = ((IngredientsFragment)  getFragmentManager().findFragmentById(R.id.ingredientsFragmentFrameLayer)).getTemporaryIngredients();
+        recipe.setIngredients(newIngredients);
 
         switch (userAction) {
             case ADD:
             {
-                recipe.setIngredients(ingredients);
                 mListener.onFragmentInteraction(recipe, USER_ACTION.ADD);
             }
             case EDIT:
             {
-                ArrayList<Ingredient> newIngredients = ((IngredientsFragment)  getFragmentManager().findFragmentById(R.id.ingredientsFragmentFrameLayer)).getTemporaryIngredients();
-                recipe.setIngredients(newIngredients);
                 mListener.onFragmentInteraction(recipe, USER_ACTION.EDIT);
             }
         }

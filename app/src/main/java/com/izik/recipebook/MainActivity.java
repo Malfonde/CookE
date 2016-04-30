@@ -57,7 +57,6 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
             case R.id.add_recipe_menu_button:
             {
                addRecipe();
-
                 break;
             }
             case R.id.homeRecipeBook:
@@ -378,7 +377,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     @Override
     public void onAddRecipeComplete(boolean success)
     {
-
+        ReturnToMainPage();
     }
 
     @Override

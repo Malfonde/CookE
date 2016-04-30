@@ -2,6 +2,8 @@ package com.izik.recipebook;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.izik.recipebook.DAL.NewModel;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -109,6 +111,9 @@ public class Model
 
     public void AddRecipe(Recipe recipe)
     {
+        NewModel newModel = NewModel.instance();
+        newModel.AddRecipe(recipe);
+
         ParseObject myObj = new ParseObject("Recipe");
         myObj.put(USER_ID, recipe.getUserId());
         myObj.put(NAME, recipe.getName());
