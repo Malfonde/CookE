@@ -29,7 +29,7 @@
         android:id="@+id/edit_recipe_menu_button"
         android:icon="@drawable/pencil"
         android:showAsAction="always"
-        android:title="add"
+        android:title="edit"
         android:visible="false"
         />
     <item

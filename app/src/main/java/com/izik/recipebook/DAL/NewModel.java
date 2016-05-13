@@ -33,7 +33,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.25:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/saveRecipe",jsonRecipe);
 
     }
 
@@ -42,7 +42,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.25:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/saveRecipe",jsonRecipe);
     }
 
     //endregion

@@ -8,6 +8,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -39,6 +41,16 @@ public class RecipeViewDetailsFragment extends Fragment {
         setHasOptionsMenu(true);
         getActivity().setTitle(recipe.getName());
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        menu.findItem(R.id.confirm_button).setVisible(false);
+        menu.findItem(R.id.add_recipe_menu_button).setVisible(true);
+        menu.findItem(R.id.edit_recipe_menu_button).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
