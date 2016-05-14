@@ -49,6 +49,50 @@ module.exports = {
             }
         });
     },
+
+    editRecipe: function (recipe, callback) {
+        var collection = connection.collection("Recipes");
+
+        var result = collection.update(
+        {_id = recipe.ID}
+        {Name: recipe.name,
+        UserID: recipe.userID,
+        CookingInstructions: recipe.cookingInstructions,
+        ServingInstructions: recipe.servingInstructions,
+        Description: recipe.description,
+        Ingredients: recipe.ingredients,
+        ImagePath: recipe.image
+        }, function (err, data) {
+            if (err) {
+                    console.log('edit recipe error: ' + err);
+                    callback(err, data);
+                }
+                else {
+                    console.log('edit recipe success');
+                    callback(null, data.ops[0]);
+                }
+        });
+    },
+
+    deleteRecipe: function (recipeID, callback) {
+    var collection = connection.collection("Recipes")
+
+     var result = collection.remove(
+            {_id = recipeID},
+            {
+            justOne: true
+            }
+            }, function (err, data) {
+                if (err) {
+                        console.log('delete recipe error: ' + err);
+                        callback(err, data);
+                    }
+                    else {
+                        console.log('delete recipe success');
+                        callback(null, data.ops[0]);
+                    }
+            });
+    },
 	
 	addNewUser: function (newUser, callback){
 		var collection = connection.collection("Users");
