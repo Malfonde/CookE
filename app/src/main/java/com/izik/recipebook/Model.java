@@ -290,6 +290,9 @@ public class Model
 
     public void EditRecipe(Recipe recipe)
     {
+        NewModel newModel = NewModel.instance();
+        newModel.EditRecipe(recipe);
+/*
         ParseQuery query = new ParseQuery("Recipe");
         query.whereEqualTo(OBJECT_ID,recipe.getObjectID());
 
@@ -325,7 +328,7 @@ public class Model
         catch (ParseException e)
         {
             WriteParseExceptionToLog(e);
-        }
+        }*/
     }
 
     private void DeleteIngredientsInIngredientsRelation(ParseRelation<ParseObject> relation)

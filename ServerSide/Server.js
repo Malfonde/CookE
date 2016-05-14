@@ -20,7 +20,12 @@ app.post('/saveRecipe',function(req,res)
 app.post('/addUser',function(req,res)
 { 	
 	bl.addUser(req ,res);
-}); 
+});
+
+app.post('/editRecipe',function(req,res)
+{
+    bl.editRecipe(req ,res);
+});
 
 var os = require('os');
 

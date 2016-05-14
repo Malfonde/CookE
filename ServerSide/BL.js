@@ -307,10 +307,23 @@ exports.addRecipe = function (req, res)
         }
     });
  };
- 
- 
- 
- 
+
+exports.editRecipe = function (req, res)
+{
+    var recipe = req.body.recipe; // Getting the parameters
+    var recipejson = JSON.parse(recipe);
+
+    console.log("main.editRecipe part*****************");
+    main.editRecipe(recipejson,function (err, recipe) {
+        if (err) {
+            console.log("Faild to update recipe: " + err);
+            res.send(JSON.stringify({ status:"Fail", recipe: recipe }));
+        } else {
+            console.log("recipe saved!");
+            res.send(JSON.stringify({ status:"Success", recipe: recipe }));
+        }
+    });
+};
  
  exports.addRecipeToUserFavorits = function (req,res)
  {

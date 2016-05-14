@@ -338,6 +338,22 @@ module.exports = {
 			}
 		});		
 	},
+
+	editRecipe: function(recipeToEdit, callback) {
+		console.log('main - recipeToEdit');
+		console.log(recipeToEdit);
+		Dal.editRecipe(recipeToEdit, function (err, recipe)
+		{
+			if (err) {
+				console.log('edit recipe error: ' + err);
+				callback(err, recipe);
+			}
+			else {
+				console.log('edit recipe success');
+				callback(null, recipe);
+			}
+		});
+	},
 	
 	addNewUser: function(userToAdd, callback){
 		console.log('main - addNewUser');
