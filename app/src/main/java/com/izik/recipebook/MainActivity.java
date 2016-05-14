@@ -59,6 +59,11 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
                addRecipe();
                 break;
             }
+            case R.id.edit_recipe_menu_button:
+            {
+                EditRecipe(this.viewedRecipe);
+                break;
+            }
             case R.id.homeRecipeBook:
             {
                 ReturnToMainPage();
@@ -203,7 +208,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
         if (item.getGroupId() == UNIQUE_MAIN_ACTIVITY_GROUP_ID) {
             if (menuItemName.compareTo("Delete") == 0) {
-                DeleteRcipe(User.getUserRecipes().get(info.position), info.position);
+                DeleteRecipe(User.getUserRecipes().get(info.position), info.position);
             } else if (menuItemName.compareTo("Edit") == 0) {
                 EditRecipe(User.getUserRecipes().get(info.position));
             }
@@ -224,7 +229,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         }
     }
 
-    private void DeleteRcipe(Recipe recipe, int position)
+    private void DeleteRecipe(Recipe recipe, int position)
     {
         User.getUserRecipes().remove(position);
         Model.instance(this).DeleteRecipe(recipe);
@@ -270,6 +275,8 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.INVISIBLE);
         findViewById(R.id.searchMainContainer).setVisibility(View.VISIBLE);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
+        optionsMenu.findItem(R.id.edit_recipe_menu_button).setVisible(false);
+        optionsMenu.findItem(R.id.delete_recipe_menu_button).setVisible(false);
         optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         SetTitleBack();
     }
@@ -302,25 +309,32 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     @Override
     public void onFragmentInteraction(Recipe recipe, USER_ACTION action)
     {
+        //TODO: shouldn't this be a switch case?
         if(action == USER_ACTION.ADD)
         {
             User.getUserRecipes().add(recipe);
             Model.instance(this).AddRecipe(recipe);
-
         }
         if(action == USER_ACTION.EDIT)
         {
             Model.instance(this).EditRecipe(recipe);
         }
 
+        if(action == USER_ACTION.DELETE)
+        {
+            User.getUserRecipes().remove(recipe);
+            Model.instance(this).DeleteRecipe(recipe);
+        }
+
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
         imageAdapter.notifyDataSetChanged();
         optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
+        optionsMenu.findItem(R.id.edit_recipe_menu_button).setVisible(false);
+        optionsMenu.findItem(R.id.delete_recipe_menu_button).setVisible(false);
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.INVISIBLE);
         findViewById(R.id.gridview).setVisibility(View.VISIBLE);
         SetTitleBack();
-
     }
 
     private void SetTitleBack() {
@@ -387,12 +401,12 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
     @Override
     public void onDeleteRecipeComplete(boolean b) {
-
+        ReturnToMainPage();
     }
 
     @Override
     public void onEditRecipeComplete(boolean b) {
-
+        ReturnToMainPage();
     }
 
     @Override

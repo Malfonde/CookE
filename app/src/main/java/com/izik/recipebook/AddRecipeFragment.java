@@ -165,6 +165,7 @@ public class AddRecipeFragment extends Fragment
     {
         menu.findItem(R.id.confirm_button).setVisible(true);
         menu.findItem(R.id.add_recipe_menu_button).setVisible(false);
+        menu.findItem(R.id.delete_recipe_menu_button).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -176,11 +177,24 @@ public class AddRecipeFragment extends Fragment
             case R.id.confirm_button:
             {
                 SaveRecipe();
+                break;
+            }
+            case R.id.delete_recipe_menu_button: {
+                if (userAction == USER_ACTION.EDIT)
+                {
+                    mListener.onFragmentInteraction(recipe, USER_ACTION.DELETE);
+                }
+                else
+                {
+                    //TODO: cancel add operation - back to main menu
+                }
+                break;
             }
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     private void SaveRecipe()
