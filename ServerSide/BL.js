@@ -324,6 +324,23 @@ exports.editRecipe = function (req, res)
         }
     });
 };
+
+exports.deleteRecipe = function (req, res)
+{
+    var recipeID = req.body.recipeID; // Getting the parameters
+    var recipeIDjson = JSON.parse(recipeID);
+
+    console.log("main.deleteRecipe part*****************");
+    main.deleteRecipe(recipeIDjson,function (err, recipeID) {
+        if (err) {
+            console.log("Faild to delete recipe: " + err);
+            res.send(JSON.stringify({ status:"Fail", recipe: recipeID }));
+        } else {
+            console.log("recipe deleted!");
+            res.send(JSON.stringify({ status:"Success", recipe: recipeID }));
+        }
+    });
+};
  
  exports.addRecipeToUserFavorits = function (req,res)
  {
