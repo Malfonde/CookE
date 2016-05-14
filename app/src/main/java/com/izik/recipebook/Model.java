@@ -202,12 +202,15 @@ public class Model
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
     {
-        ParseQuery query = new ParseQuery("Recipe");
-        query.whereEqualTo(USER_ID, id);
+//        ParseQuery query = new ParseQuery("Recipe");
+//        query.whereEqualTo(USER_ID, id);
+//
+//        allCurrentUserRecipes = GetRecipesByQuery(query);
+//
+//        return allCurrentUserRecipes;
 
-        allCurrentUserRecipes = GetRecipesByQuery(query);
-
-        return allCurrentUserRecipes;
+        NewModel newModel = NewModel.instance();
+        return newModel.GetAllUserRecipesByID(id);
     }
 
     public ArrayList<Recipe>  GetAllUsersRecipes()

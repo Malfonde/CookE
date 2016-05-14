@@ -5,10 +5,13 @@ import android.content.Context;
 import com.izik.recipebook.Ingredient;
 import com.izik.recipebook.Recipe;
 import com.izik.recipebook.ServerSideHandlers.ServerRequest;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by izik on 4/30/2016.
@@ -43,6 +46,22 @@ public class NewModel
         ServerRequest serverRequest = new ServerRequest();
 
         JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/saveRecipe",jsonRecipe);
+    }
+
+    public ArrayList<Recipe> GetAllUserRecipesByID(String id)
+    {
+        JSONObject jsonId = new JSONObject();
+
+        try {
+            jsonId.put("userID", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/GetAllUserRecipes",jsonId);
+
+        return null;
     }
 
     //endregion
