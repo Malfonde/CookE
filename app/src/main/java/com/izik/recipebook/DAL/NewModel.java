@@ -81,7 +81,6 @@ public class NewModel
     public User GetCurrentUser(Context mContext)
     {
         if(_user == null)
-
             _user = NewModel.instance().AssignCurrentUser(new User(mContext));
         return _user;
     }
@@ -166,6 +165,12 @@ public class NewModel
         JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addUser", jsonUser);
 
         _user = user;
+
+        try {
+            _user.setObjectId(json.getString("_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return _user;
     }
 

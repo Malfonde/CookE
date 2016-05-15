@@ -358,10 +358,8 @@ exports.deleteRecipe = function (req, res)
          }
          else {
              console.log("got all the user's recipes");
-
-                         res.send(JSON.stringify({ Recipes: results }));
-             }
-
+             res.send(JSON.stringify({ Recipes: results }));
+         }
      });
  };
 

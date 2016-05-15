@@ -53,27 +53,6 @@ for (var k in interfaces) {
 console.log(addresses);
 
 
-
-/*app.get('/saveRecipe', function (request, response) {
-    console.log("saveRecipe: " + request.params.id);
-
-    var wantedScreenId = Number(request.params.id);
-
-    // iterate over the ads received from the server and return only the relevent ones
-    var availableAds = getAds().filter(function (currAd) {
-        return currAd.isAdSuitable(wantedScreenId);
-    });
-
-    // If no ad can be displayed
-    if (availableAds.length == 0) {
-        response.sendfile("./noAds.html");
-    }
-    else {
-        // Return a random ad that fits the criteria
-        response.json(availableAds[Math.floor((Math.random() * availableAds.length))]);
-    }
-});*/
-
 //--- Apriori Algorithm --- 
 app.post('/Server/getRecommandedRecipesByUser', function (req, res) 
 {  

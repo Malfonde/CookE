@@ -98,7 +98,8 @@ module.exports = {
 		var collection = connection.collection("Users");
 		
 		var result = collection.insert({
-			Favorites: newUser.favorites			
+			Favorites: newUser.favorites,
+			MachineID: newUser.UserID
 		}, function (err, data){
 			
 			if(err){
@@ -204,7 +205,7 @@ module.exports = {
                 callback(null);
             }
         });
-    }
+    },
 
     queryUserByID: function (queryJson, callback){
         var results;

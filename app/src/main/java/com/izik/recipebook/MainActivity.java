@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.izik.recipebook.DAL.NewModel;
 import com.parse.Parse;
 
 import java.util.ArrayList;
@@ -107,7 +108,9 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         AddOrRemoveFavoritesDialog.setCancelable(true);
 
         //Should happen once
-        this.User = Model.instance(this).GetCurrentUser();
+        this.User = NewModel.instance().GetCurrentUser(this);
+
+        //this.User = Model.instance(this).GetCurrentUser();
 
         PropertiesReader propertyReader = new PropertiesReader(this);
         Properties properties = propertyReader.getProperties("UserInfo.Properties");

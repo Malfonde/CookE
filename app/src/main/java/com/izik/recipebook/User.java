@@ -10,14 +10,14 @@ public class User
     private String id;
     private ArrayList<Recipe> userRecipes = new ArrayList<>();
     private ArrayList<Recipe> favoritRecipes = new ArrayList<>();
-    private Context context;
+    //private Context context;
     private String objectId;
 
     public User (Context context)
     {
         String androidId = android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         UUID deviceUuid = new UUID(androidId.hashCode(), 0);
-        this.context = context;
+        //this.context = context;
 
         id = deviceUuid.toString();
     }
