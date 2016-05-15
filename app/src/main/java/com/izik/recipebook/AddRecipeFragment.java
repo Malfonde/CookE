@@ -212,10 +212,12 @@ public class AddRecipeFragment extends Fragment
             case ADD:
             {
                 mListener.onFragmentInteraction(recipe, USER_ACTION.ADD);
+                break;
             }
             case EDIT:
             {
                 mListener.onFragmentInteraction(recipe, USER_ACTION.EDIT);
+                break;
             }
         }
     }
