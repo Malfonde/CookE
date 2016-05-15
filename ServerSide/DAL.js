@@ -54,7 +54,7 @@ module.exports = {
         var collection = connection.collection("Recipes");
 
         var result = collection.update(
-        {_id = recipe.ID}
+        {_id: recipe.objectId },
         {Name: recipe.name,
         UserID: recipe.userID,
         CookingInstructions: recipe.cookingInstructions,
@@ -74,13 +74,13 @@ module.exports = {
         });
     },
 
-    deleteRecipe: function (recipeID, callback) {
+/*    deleteRecipe: function (recipeID, callback) {
     var collection = connection.collection("Recipes")
 
      var result = collection.remove(
-            {_id = recipeID},
+            {_id: recipeID},
             {
-            justOne: true
+                justOne: true
             }
             }, function (err, data) {
                 if (err) {
@@ -92,7 +92,7 @@ module.exports = {
                         callback(null, data.ops[0]);
                     }
             });
-    },
+    },*/
 	
 	addNewUser: function (newUser, callback){
 		var collection = connection.collection("Users");
@@ -152,7 +152,7 @@ module.exports = {
 		var collection = connection.collection("Users");
 		
 		var updatedUser = {
-                Favorites:  
+              //  Favorites:
             };
 		
 		

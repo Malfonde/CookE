@@ -341,7 +341,29 @@ exports.deleteRecipe = function (req, res)
         }
     });
 };
- 
+
+ exports.getUserRecipes = function (req,res)
+ {
+     var temp = req.body.recipe; // Getting the parameters
+     var jsonId = JSON.parse(temp);
+
+     console.log("main.getUserRecipes part*****************");
+
+     main.getAllRecipesByUser(jsonId.userID,function (err, results)
+     {
+         if (err) {
+             console.log("Faild to get all the recipes of a user: " + err);
+             res.send(JSON.stringify({ status: "Fail" }));
+         }
+         else {
+             console.log("got all the user's recipes");
+
+                         res.send(JSON.stringify({ Recipes: results }));
+             }
+
+     });
+ };
+
  exports.addRecipeToUserFavorits = function (req,res)
  {
 	 var recipe = req.body.recipe;

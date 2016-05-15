@@ -370,7 +370,7 @@ module.exports = {
     			}
     		});
     	},
-	
+
 	addNewUser: function(userToAdd, callback){
 		console.log('main - addNewUser');
         console.log(userToAdd);
@@ -724,7 +724,7 @@ module.exports = {
 	getAllRecipesByUser: function(userID, callback){
 		console.log('main - getAllRecipesByUser');
 		console.log('UserID:' + userID);
-		Dal.getAllRecipesByUser(userID, function (err, results) 
+		Dal.getAllRecipesByUser(userID, function (err, results)
 		{
 			if(err){
 				console.log('get all recipes by user error: ' + err);                   
@@ -733,8 +733,8 @@ module.exports = {
 			else
 			{
 				var allLists = [];
-				watchLists.forEach(function (list) {
-					allLists.push(list.watchList);					
+				results.forEach(function (list) {
+					allLists.push(list);
 				});
 				
 				results = allLists;

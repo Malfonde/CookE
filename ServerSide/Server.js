@@ -32,6 +32,10 @@ app.post('/deleteRecipe',function(req,res)
     bl.deleteRecipe(req ,res);
 });
 
+app.post('/GetAllUserRecipes',function(req,res)
+{
+    bl.getUserRecipes(req ,res);
+});
 
 var os = require('os');
 
