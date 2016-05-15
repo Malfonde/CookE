@@ -390,7 +390,7 @@ module.exports = {
 	addRecipeToUserFavorits: function(favRecipe, userID, callback){
 		console.log('main - addRecipeToUserFavorits');
         console.log(favRecipe);
-		Dal.addRecipeToUserFavorits(recipeToAdd, userID, function(err,recipe)
+		Dal.addRecipeToUserFavorits(favRecipe, userID, function(err,recipe)
 		{
 			if(err){
 				callback(err,favRecipe);
@@ -400,6 +400,22 @@ module.exports = {
 				callback(null, favRecipe);
 			}
 		});		
+	},
+
+	removeRecipeFromUserFavorits: function(favRecipe, userID, callback)
+	{
+        console.log('main - removeRecipeFromUserFavorits');
+        console.log(favRecipe);
+        Dal.removeRecipeFromUserFavorits(favRecipe, userID, function(err,recipe)
+        {
+            if(err){
+                callback(err,favRecipe);
+            }
+            else
+            {
+                callback(null, favRecipe);
+            }
+        });
 	},
 	
 

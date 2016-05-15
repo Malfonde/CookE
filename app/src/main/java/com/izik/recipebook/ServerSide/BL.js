@@ -368,7 +368,6 @@ exports.deleteRecipe = function (req, res)
  exports.addRecipeToUserFavorits = function (req,res)
  {
 	 var recipe = req.body.recipe;
-	 var userID = req.body.userID;	 
 	 var recipejson = JSON.parse(recipe);
 
 	 console.log("main.addRecipeToFavorites part*****************");
@@ -382,7 +381,23 @@ exports.deleteRecipe = function (req, res)
             res.send(JSON.stringify({ status:"Success", recipe: recipe }));
         }
     });
-	 
+ };
+
+ exports.removeRecipeFromUserFavorits = function(req,res)
+ {
+     var recipe = req.body.recipe;
+     var recipejson = JSON.parse(recipe);
+    console.log("main.removeRecipeFromUserFavorits part*****************");
+
+      main.removeRecipeFromUserFavorits(recipejson,userID,function (err, recipe) {
+            if (err) {
+                console.log("Faild to remove recipe from user favorites : " + err);
+    			res.send(JSON.stringify({ status:"Fail", recipe: recipe }));
+            } else {
+                console.log("Recipe was removes from favorites!");
+                res.send(JSON.stringify({ status:"Success", recipe: recipe }));
+            }
+        });
  };
 
 

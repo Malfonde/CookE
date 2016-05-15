@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.izik.recipebook.DAL.NewModel;
+
 import java.util.ArrayList;
 
 public class ImageAdapter extends BaseAdapter
@@ -82,7 +84,7 @@ public class ImageAdapter extends BaseAdapter
 
     public  ArrayList<Recipe> SetRecipesImagesArrayForUser(String id)
     {
-        ArrayList<Recipe> userRecipes = Model.instance(mContext).GetAllUserRecipesByID(id);
+        ArrayList<Recipe> userRecipes = NewModel.instance().GetAllUserRecipesByID(id);
         mThumbIds = GetAllImagesFromArrayList(userRecipes);
         return userRecipes;
     }

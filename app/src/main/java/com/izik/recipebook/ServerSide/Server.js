@@ -85,3 +85,8 @@ app.post('/Server/addRecipeToUserFavorits', function (req, res)
 	bl.addRecipeToUserFavorits(req, res);    
 });
 
+app.post('/Server/removeRecipeFromUserFavorits', function(req,res)
+{
+    bl.removeRecipeFromUserFavorits(req,res);
+});
+

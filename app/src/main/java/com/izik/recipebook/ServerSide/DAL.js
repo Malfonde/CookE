@@ -168,23 +168,43 @@ module.exports = {
 		});
 	},
 	
-	addRecipeToUserFavorits: function (recipeToAdd, userID, callback){
-    		var collection = connection.collection("Users");
-    		var o_id = ObjectID(userID);
-    		collection.update({ _id: o_id }, { $addToSet: { Favorites: recipeToAdd }}, function(err)
-    		{
-    			if (err)
-    			{
-    				console.log('update favorites error: ' + err);
-    				callback(err);
-    			}
-    			else
-    			{
-    				console.log('update favorites success');
-    				callback(null);
-    			}
-    		});
+	addRecipeToUserFavorits: function (recipeToAdd, userID, callback)
+	{
+        var collection = connection.collection("Users");
+        var o_id = ObjectID(userID);
+        collection.update({ _id: o_id }, { $addToSet: { Favorites: recipeToAdd }}, function(err)
+        {
+            if (err)
+            {
+                console.log('update favorites error: ' + err);
+                callback(err);
+            }
+            else
+            {
+                console.log('update favorites success');
+                callback(null);
+            }
+        });
     	},
+
+    removeRecipeFromUserFavorits: function (favRecipe, userID, callback)
+    {
+        var collection = connection.collection("Users");
+        var o_id = ObjectID(userID);
+        collection.update({ _id: o_id }, { $pull: { Favorites: favRecipe }}, function(err)
+        {
+            if (err)
+            {
+                console.log('update favorites error: ' + err);
+                callback(err);
+            }
+            else
+            {
+                console.log('update favorites success');
+                callback(null);
+            }
+        });
+    }
 
     queryUserByID: function (queryJson, callback){
         var results;
