@@ -354,6 +354,22 @@ module.exports = {
 			}
 		});
 	},
+
+	deleteRecipe: function(recipeIDToDelete, callback) {
+    		console.log('main - recipeToDelete');
+    		console.log(recipeIDToDelete);
+    		Dal.editRecipe(recipeIDToDelete, function (err, recipe)
+    		{
+    			if (err) {
+    				console.log('delete recipe error: ' + err);
+    				callback(err, recipe);
+    			}
+    			else {
+    				console.log('delete recipe success');
+    				callback(null, recipe);
+    			}
+    		});
+    	},
 	
 	addNewUser: function(userToAdd, callback){
 		console.log('main - addNewUser');

@@ -27,6 +27,12 @@ app.post('/editRecipe',function(req,res)
     bl.editRecipe(req ,res);
 });
 
+app.post('/deleteRecipe',function(req,res)
+{
+    bl.deleteRecipe(req ,res);
+});
+
+
 var os = require('os');
 
 var interfaces = os.networkInterfaces();
