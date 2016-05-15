@@ -293,11 +293,12 @@ exports.addRecipe = function (req, res)
  
  exports.addUser = function (req, res)
  {
-	var user = req.body.user; // Getting the parameters
+	var user = req.body.recipe; // Getting the parameters
+    console.log(user);
 	var userjson = JSON.parse(user);
 	
 	console.log("main.addUser part*****************");
-    main.addNewUser(userjson,function (err, user) {
+    main.addNewUser(userjson.userID,function (err, user) {
         if (err) {
             console.log("Faild to add new user: " + err);
 			res.send(JSON.stringify({ status:"Fail", user: user }));
@@ -619,48 +620,51 @@ exports.recommandByEvent = function (req, res) {
 */
 
 exports.getRecommandedRecipesByUser = function (req, res)
- {
-	var recipe = req.body.recipe; // Getting the parameters
-	var recipejson = JSON.parse(recipe);
-	
-	console.log("main.getRecommandedRecipesByUser part*****************");
-	
-    main.getAllRecipesByUser(recipejson.UserID,function (err, results) 
-	{
-        if (err) {
-            console.log("Faild to get all the recipes of a user: " + err);
-			res.send(JSON.stringify({ status: "Fail" }));
-        }
-		else {
-            console.log("got all the user's recipes");
-			var aprioriRes = getAprioriResults(user.watchList, results);
-			console.log(aprioriRes);
-						
-		    if (aprioriRes.length > 0) 
-			{
-				var idsJson = [];
-				aprioriRes.forEach(function (currId) {
-					idsJson.push({ id: currId });
-				});
+  {
+ 	console.log("main.getRecommandedRecipesByUser part*****************");
 
-				main.getRecipesByIDs(idsJson, function (err, retRecipes) {
-					if (err) {
-						console.log(err);
-						res.send(JSON.stringify({ status: "Fail" }));
-					}
-					else {
-						console.log(retRecipes);
-						console.log("getRecommandedRecipesByUser success!!");
-						res.send(JSON.stringify({
-							status: "Success",
-							popRecipes: retRecipes
-						}));
-					}
-				});
-			}           
-        }
-    });
- };
+ 	var userFromClient = req.body.user; // Getting the parameters
+ 	var userjson = JSON.parse(userFromClient);
+
+ 	main.queryUserByID(userjson.userID, function (errUser, user)
+ 	{
+ 		main.getAllFavoriteLists(function (err, results)
+ 		{
+ 			if (err) {
+ 				console.log("Faild to get all the favorite recipes of all users: " + err);
+ 				res.send(JSON.stringify({ status: "Fail" }));
+ 			}
+ 			else {
+ 				console.log("got all the users favorite recipes");
+ 				var aprioriRes = getAprioriResults(user.Favorites, results);
+ 				console.log(aprioriRes);
+
+ 				if (aprioriRes.length > 0)
+ 				{
+ 					var idsJson = [];
+ 					aprioriRes.forEach(function (currId) {
+ 						idsJson.push({ id: currId });
+ 					});
+
+ 					main.getRecipesByIDs(idsJson, function (err, retRecipes) {
+ 						if (err) {
+ 							console.log(err);
+ 							res.send(JSON.stringify({ status: "Fail" }));
+ 						}
+ 						else {
+ 							console.log(retRecipes);
+ 							console.log("getRecommandedRecipesByUser success!!");
+ 							res.send(JSON.stringify({
+ 								status: "Success",
+ 								popRecipes: retRecipes
+ 							}));
+ 						}
+ 					});
+ 				}
+ 			}
+ 		});
+ 	});
+  };
  
  //--- private Apriori methods ---
  
@@ -698,8 +702,6 @@ var getAprioriResults = function (arrayToFind, allLists) {
             }
         }
     };
-
-
 
     return maxRhs;
 };

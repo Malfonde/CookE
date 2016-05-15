@@ -127,7 +127,27 @@ module.exports = {
             }
         });		
 	},
-	
+
+	getAllUserFavoriteRecipes: function(userID, callback){
+    		var results;
+    		var o_id = ObjectID(userID);
+
+    		connection.collection("Users").find({_id:o_id}, { fields: { 'Favorites': 1, '_id': 0 } }).toArray(function (err, favoritesList)
+    		{
+    			if(err)
+    			{
+    				console.log(err);
+                    callback(err, results);
+    			}
+    			else
+    			{
+    				results = favoritesList;
+    				console.log(results);
+    				callback(null, results);
+    			}
+    		});
+    	},
+
 	// returns recipes by query
 	getRecipesByQueryArray: function (recipesQuery, callback){
 		
@@ -148,13 +168,60 @@ module.exports = {
 		});
 	},
 	
-	addRecipeToUserFavorits: function (recipeToAdd, userID, callback){		
-		var collection = connection.collection("Users");
-		
-		var updatedUser = {
-              //  Favorites:
-            };
-		
-		
-	}
+	addRecipeToUserFavorits: function (recipeToAdd, userID, callback){
+    		var collection = connection.collection("Users");
+    		var o_id = ObjectID(userID);
+    		collection.update({ _id: o_id }, { $addToSet: { Favorites: recipeToAdd }}, function(err)
+    		{
+    			if (err)
+    			{
+    				console.log('update favorites error: ' + err);
+    				callback(err);
+    			}
+    			else
+    			{
+    				console.log('update favorites success');
+    				callback(null);
+    			}
+    		});
+    	},
+
+    queryUserByID: function (queryJson, callback){
+        var results;
+        console.log(queryJson);
+        db.collection("Users").findOne(queryJson, function (err, userDetails) {
+            if (err) {
+                console.log(err);
+                callback(err, results);
+            }
+            else {
+                results = userDetails;
+                console.log(results);
+                callback(null, results);
+            }
+        });
+    },
+
+    getAllFavoriteLists: function(callback){
+        var results;
+        db.collection("Users").find({}, { fields: { 'Favorites': 1, '_id': 0 } }).toArray(function (err, favoritesLists)
+        {
+            if (err)
+            {
+                console.log(err);
+                callback(err, results);
+            }
+            else
+            {
+                var allLists = [];
+                favoritesLists.forEach(function (list) {
+                    allLists.push(list.watchList);
+                });
+
+                results = allLists;
+                console.log(results);
+                callback(null, results);
+            }
+        });
+    }
 };

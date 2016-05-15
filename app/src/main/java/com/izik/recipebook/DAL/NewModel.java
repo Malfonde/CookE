@@ -5,6 +5,7 @@ import android.content.Context;
 import com.izik.recipebook.Ingredient;
 import com.izik.recipebook.Recipe;
 import com.izik.recipebook.ServerSideHandlers.ServerRequest;
+import com.izik.recipebook.User;
 import com.parse.ParseQuery;
 
 import org.json.JSONArray;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class NewModel
 {
     private static  NewModel instance = new NewModel();
+    private User _user;
 
     private NewModel()
     {
@@ -74,6 +76,14 @@ public class NewModel
         }
 
         return Results;
+    }
+
+    public User GetCurrentUser(Context mContext)
+    {
+        if(_user == null)
+
+            _user = NewModel.instance().AssignCurrentUser(new User(mContext));
+        return _user;
     }
 
     //endregion
@@ -146,6 +156,43 @@ public class NewModel
         }
 
         return jsonRecipe;
+    }
+
+    private User AssignCurrentUser(User user)
+    {
+        JSONObject jsonUser = ConvertUserToJSON(user);
+        ServerRequest serverRequest = new ServerRequest();
+
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addUser", jsonUser);
+
+        _user = user;
+        return _user;
+    }
+
+    private JSONObject ConvertUserToJSON(User user)
+    {
+        JSONObject userJson = new JSONObject();
+
+        try {
+            userJson.put("userID", user.getId());
+
+            JSONArray favorites = new JSONArray();
+
+            for (Recipe recipe : user.getFavoritRecipes()) {
+
+                JSONObject favoritejson = new JSONObject();
+
+                favoritejson.put("recipeID", recipe.getObjectID());
+            }
+
+            userJson.put("favorites", favorites.toString());
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return userJson;
     }
 
     //endregion

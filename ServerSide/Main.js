@@ -393,11 +393,11 @@ module.exports = {
 		Dal.addRecipeToUserFavorits(recipeToAdd, userID, function(err,recipe)
 		{
 			if(err){
-				callback(err,recipe);
+				callback(err,favRecipe);
 			}
 			else
 			{
-				callback(null, recipe);
+				callback(null, favRecipe);
 			}
 		});		
 	},
@@ -691,8 +691,7 @@ module.exports = {
         });
     }*/
 	
-	getRecipesByIDs: function (jsonArr, callback) 
-	{
+	getRecipesByIDs: function (jsonArr, callback){
 		// create query array from the json from the client
 		var queryArr = [];
 
@@ -742,7 +741,60 @@ module.exports = {
 				callback(null, results);
 			}
 		});
-	}
+	},
+
+	getAllUserFavoriteRecipes: function(userID, callback){
+    		console.log('main - getAllUserFavoriteRecipes');
+    		console.log('UserID:' + userID);
+    		Dal.getAllUserFavoriteRecipes(userID, function (err, results)
+    		{
+    			if(err)
+    			{
+    				console.log('get users favorite recipes error: ' + err);
+    				callback(err, results);
+    			}
+    			else
+    			{
+    				console.log('get users favorite recipes success');
+    				callback(err, results);
+    			}
+    		});
+    	},
+
+    queryUserByID: function (Id, callback){
+        var queryJson = { _id: ObjectID(Id) };
+
+        Dal.queryUserByID(queryJson, function (err, results)
+        {
+           if(err)
+           {
+                console.log('error while retrieving userquery by id : ' + err);
+                callback(err, results);
+           }
+           else
+           {
+                console.log('retrieving userquery by id success');
+                callback(err, results);
+           }
+        });
+    },
+
+    getAllFavoriteLists: function(callback){
+        console.log('main - getAllFavoriteLists');
+        Dal.getAllFavoriteLists(function (err, results)
+        {
+            if(err)
+            {
+                 console.log(err);
+                 callback(err, results);
+            }
+            else
+            {
+                console.log('get all users favorite recipes success');
+                 callback(err, results);
+            }
+        });
+    }
 };
 
 
