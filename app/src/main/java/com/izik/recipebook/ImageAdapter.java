@@ -138,7 +138,8 @@ public class ImageAdapter extends BaseAdapter
 
     public ArrayList<Recipe> setFavoriteRecipesByUserId(String UserId)
     {
-        ArrayList<Recipe> favorites = Model.instance(mContext).GetUserFavoriteRecipesById(UserId);
+       // ArrayList<Recipe> favorites = Model.instance(mContext).GetUserFavoriteRecipesById(UserId);
+        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(mContext);
         mThumbIds = GetAllImagesFromArrayList(favorites);
 
         return favorites;

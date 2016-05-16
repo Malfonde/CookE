@@ -467,22 +467,30 @@ exports.deleteRecipe = function (req, res)
 exports.getRecommandedRecipesByUser = function (req, res)
   {
  	console.log("main.getRecommandedRecipesByUser part*****************");
-
- 	var userFromClient = req.body.user; // Getting the parameters
+ 	var userFromClient = req.body.recipe; // Getting the parameters
  	var userjson = JSON.parse(userFromClient);
 
  	main.findUser(userjson, function (errUser, user)
  	{
  		main.getAllFavoriteLists(function (err, results)
  		{
+ 		//TODO: this is static!!
+ 		var staticResults =  [['5739d6919ff546d08d7fe11a', '5739d6919ff546d08d7fe11e'],
+                             ['5739d6919ff546d08d7fe11a', '5739d6919ff546d08d7fe11d','5739d6919ff546d08d7fe11e']];
+        var staticUserFavorites = ['5739d6919ff546d08d7fe11a'];
+
  			if (err) {
  				console.log("Faild to get all the favorite recipes of all users: " + err);
  				res.send(JSON.stringify({ status: "Fail" }));
  			}
  			else {
  				console.log("got all the users favorite recipes");
- 				var aprioriRes = getAprioriResults(user.Favorites, results);
- 				console.log(aprioriRes);
+ 				//var aprioriRes = getAprioriResults(user.Favorites, results);
+ 				var aprioriRes = getAprioriResults(staticUserFavorites, staticResults);
+ 				aprioriRes.forEach(function(currID)
+ 				{
+ 				    console.log("the id in the result : " + currID);
+ 				});
 
  				if (aprioriRes.length > 0)
  				{
@@ -501,7 +509,7 @@ exports.getRecommandedRecipesByUser = function (req, res)
  							console.log("getRecommandedRecipesByUser success!!");
  							res.send(JSON.stringify({
  								status: "Success",
- 								popRecipes: retRecipes
+ 								Recipes: retRecipes
  							}));
  						}
  					});
@@ -518,6 +526,7 @@ var getAprioriResults = function (arrayToFind, allLists)
     console.log("getAprioriResults part ********************************");
     var algResults = new Apriori.Algorithm(0.4, 0.6, false).analyze(allLists);
     var associationRules = algResults.associationRules;
+    console.log("assosiation rules results : ");
 
     var formatJson = JSON.stringify(associationRules);
     console.log(formatJson);
@@ -529,7 +538,8 @@ var getAprioriResults = function (arrayToFind, allLists)
     for (var i = 0; i < associationRules.length; i++) {
         var currRule = associationRules[i];        
         var intersect = Underscore.intersection(arrayToFind, currRule.lhs);
-
+        console.log("*********************** intersect.length : " + intersect.length);
+        console.log("**********************  arrayToFind.length : " + arrayToFind.length);
         if (intersect.length == arrayToFind.length) {
             maxLength = intersect.length;
             maxRhs = currRule.rhs;
@@ -551,172 +561,3 @@ var getAprioriResults = function (arrayToFind, allLists)
 console.log("the results are : maxRhs **************** " + maxRhs);
     return maxRhs;
 };
-
-/*
-
-exports.recommandByUser = function (req, res, idFromCookies) {
-    main.queryUserByID(idFromCookies, function (errUser, user) {
-        if (errUser) {
-            console.log(errUser);
-            res.json({ status: "Fail" });
-        }
-        else {
-            main.getWatchLists(function (err, results) {
-                if (err) {
-                    console.log(err);
-                    res.json({ status: "Fail" });
-                }
-                else {
-                    console.log(user.watchList);
-                    var aprioriRes = getAprioriResults(user.watchList, results);
-
-                    console.log(aprioriRes);
-
-                    if (aprioriRes.length > 0) {
-
-                        var idsJson = [];
-                        aprioriRes.forEach(function (currId) {
-                            idsJson.push({ id: currId });
-                        });
-
-                        main.queryShows(idsJson, function (showsErr, retShows) {
-                            if (showsErr) {
-                                console.log(showsErr);
-                                res.json({ status: "Fail" });
-                            }
-                            else {
-                                console.log(retShows);
-                                console.log("recommandByEvent success!!");
-                                res.json({
-                                    status: "Success",
-                                    popEvents: retShows
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        console.log("There were no results found");
-                        var algRes = getAprioriPopular(results);
-
-                        if (algRes.length > 0) {
-
-                            var idsJson = [];
-                            algRes.forEach(function (currId) {
-                                idsJson.push({ id: currId });
-                            });
-
-                            main.queryShows(idsJson, function (showsErr, retShows) {
-                                if (showsErr) {
-                                    console.log(showsErr);
-                                    res.json({ status: "Fail" });
-                                }
-                                else {
-                                    console.log(retShows);
-                                    console.log("getAprioriPopular success!!");
-                                    res.json({
-                                        status: "No Results For User",
-                                        popEvents: retShows
-                                    });
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-
-        }
-
-    });
-
-};
-
-
-// --- Users ---
-
-exports.updateUser = function (req, res, idFromCookies) {
-
-    main.getUserByUsername({ username: req.body.Username }, function (err, resultUser) {
-
-        if (err) {
-            console.log("Faild to update user: " + err);
-            res.json({ status: "User Not Found" });
-        } else {
-
-            if (resultUser._id == idFromCookies) {
-                main.updateUser(req.body, idFromCookies, function (updateErr, user) {
-                    if (updateErr) {
-                        console.log("Faild to update user: " + updateErr);
-                        res.json({ status: "Faild To Update" });
-                    } else {
-                        console.log("updated user saved!");
-                        res.json({
-                            status: "Success",
-                            user: user
-                        });
-                    }
-                });
-            }
-            else {
-                console.log("Could not update because this is not the logged user!!");
-                res.json({ status: "Not The Logged User" });
-            }
-        }
-    });
-};
-
-// --- Logins ---
-exports.login = function (req, res) {
-    console.log(req.body);
-    main.getUserByUsername({ username: req.body.username }, function (err, user) {
-        if (err) {
-            console.log("Faild to login: " + err);
-            res.json({ status: "Fail" });
-        } else {
-            if (user != undefined && user != null) {
-                if (user.password == req.body.password) {
-                    console.log("Login succeded!");
-                    res.json({
-                        status: "Success",
-                        user: user
-                    });
-                }
-                else {
-                    res.json({ status: "Incorrect Password" });
-                }
-            }
-            else {
-                res.json({ status: "User Not Found" });
-            }
-        }
-    });
-};
-
-exports.AddToWatchList = function (ShowId, username) {
-
-    main.AddToWatchList(ShowId, username, function (err) {
-        if (err) {
-            console.log("Faild AddToWatchList: " + err);
-        } else {
-            console.log("AddToWatchList succeded!");
-        }
-    });
-};
-
-
-var getAprioriPopular = function (allLists) {
-
-    var algResults = new Apriori.Algorithm(0.4, 0.0, false).analyze(allLists);
-    var frequentItemSets = algResults.frequentItemSets["1"];
-
-    var popResults = [];
-
-    if (frequentItemSets != undefined) {
-        frequentItemSets.forEach(function (itemSet) {
-            popResults.push(itemSet.itemSet[0]);
-        });
-    }
-    var formatJson = JSON.stringify(popResults);
-    console.log(formatJson);
-
-    return popResults;
-};*/

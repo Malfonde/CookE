@@ -166,10 +166,23 @@ module.exports = {
     	},
 
 	// returns recipes by query
-	getRecipesByQueryArray: function (recipesQuery, callback){
-		
+	getRecipesByIDs: function (jsonArr, callback)
+	{
+        var queryArr = [];
+
+            for (i = 0; i < jsonArr.length; i++) {
+                var currQuery = {};
+
+                // Go over all the posible parameters to query by, and create the matching qurey format.
+                if (jsonArr[i].id != undefined)
+                {
+                    currQuery._id = ObjectID(jsonArr[i].id);
+                    queryArr.push(currQuery);
+                }
+            }
+
 		var results;
-		connection.collection("Recipes").find({ $or: recipesQuery }).toArray(function (err, retRecipes) 
+		connection.collection("Recipes").find({ $or: queryArr }).toArray(function (err, retRecipes)
 		{
 			if(err)
 			{
@@ -222,7 +235,7 @@ module.exports = {
         });
     },
 
-    queryUserByID: function (queryJson, callback){
+  /*  queryUserByID: function (queryJson, callback){
         var results;
         console.log(queryJson);
         db.collection("Users").findOne(queryJson, function (err, userDetails) {
@@ -236,11 +249,12 @@ module.exports = {
                 callback(null, results);
             }
         });
-    },
+    },*/
 
     getAllFavoriteLists: function(callback){
         var results;
-        db.collection("Users").find({}, { fields: { 'Favorites': 1, '_id': 0 } }).toArray(function (err, favoritesLists)
+        var collection = connection.collection("Users");
+        collection.find({}, { fields: { 'Favorites': 1, '_id': 0 } }).toArray(function (err, favoritesLists)
         {
             if (err)
             {
