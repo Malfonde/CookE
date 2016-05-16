@@ -386,11 +386,27 @@ module.exports = {
 			}
 		});
 	},
-	
-	addRecipeToUserFavorits: function(favRecipe, userID, callback){
+
+	findUser: function(userToVerify, callback){
+        console.log('main - findUser');
+        console.log(userToVerify);
+        Dal.findUser(userToVerify.userID, function(err,user)
+        {
+            if(err){
+                console.log('find user error: ' + err);
+                callback(err, user);
+            }
+            else{
+                console.log('find user success: '+ user);
+                callback(null, user);
+            }
+        });
+	},
+
+	addRecipeToUserFavorites: function(favRecipe, userID, callback){
 		console.log('main - addRecipeToUserFavorits');
         console.log(favRecipe);
-		Dal.addRecipeToUserFavorits(favRecipe, userID, function(err,recipe)
+		Dal.addRecipeToUserFavorites(favRecipe, userID, function(err,recipe)
 		{
 			if(err){
 				callback(err,favRecipe);
@@ -402,11 +418,11 @@ module.exports = {
 		});		
 	},
 
-	removeRecipeFromUserFavorits: function(favRecipe, userID, callback)
+	removeRecipeFromUserFavorites: function(favRecipe, userID, callback)
 	{
         console.log('main - removeRecipeFromUserFavorits');
         console.log(favRecipe);
-        Dal.removeRecipeFromUserFavorits(favRecipe, userID, function(err,recipe)
+        Dal.removeRecipeFromUserFavorites(favRecipe, userID, function(err,recipe)
         {
             if(err){
                 callback(err,favRecipe);
@@ -757,6 +773,21 @@ module.exports = {
 				callback(null, results);
 			}
 		});
+	},
+
+	getAllUsersRecipes: function(callback){
+	    console.log('main - getAllUsersRecipes');
+	    Dal.getAllRecipes(function(err, results){
+	        if(err)
+	        {
+	            console.log('get all recipes error: ' + err);
+                callback(err, results);
+	        }
+	        else{
+                console.log('get all recipes success');
+                callback(err, results);
+	        }
+	    });
 	},
 
 	getAllUserFavoriteRecipes: function(userID, callback){

@@ -91,7 +91,8 @@ public class ImageAdapter extends BaseAdapter
 
     public  ArrayList<Recipe> setRecipesFromAllUsers()
     {
-        ArrayList<Recipe> allRecipes = Model.instance(mContext).GetAllUsersRecipes();
+        //ArrayList<Recipe> allRecipes = Model.instance(mContext).GetAllUsersRecipes();
+        ArrayList<Recipe> allRecipes = NewModel.instance().GetAllUsersRecipes();
         mThumbIds = GetAllImagesFromArrayList(allRecipes);
         return  allRecipes;
     }

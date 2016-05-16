@@ -159,7 +159,7 @@ public class Model
         }
     }
 
-    public void AddOrRemoveRecipeToFavorites(Recipe recipe, boolean isAddOperation)
+    /*public void AddOrRemoveRecipeToFavorites(Recipe recipe, boolean isAddOperation)
     {
         ParseQuery query = new ParseQuery(USERRECIPEBOOK);
         query.whereEqualTo(OBJECT_ID, GetCurrentUser().getObjectId());
@@ -192,7 +192,7 @@ public class Model
 
         mListener.onaddOrRemoveFavoritesSuccess(recipe, isAddOperation);
 
-    }
+    }*/
 
     private void WriteParseExceptionToLog(ParseException e)
     {
@@ -424,7 +424,7 @@ public class Model
 
     public void RemoveRecipeFromUserFavorites(Recipe recipe)
     {
-        AddOrRemoveRecipeToFavorites(recipe, false);
+       // AddOrRemoveRecipeToFavorites(recipe, false);
     }
 
     public User GetCurrentUser()
@@ -472,8 +472,9 @@ public class Model
         }
     }
 
-    public void AddRecipeToFavorites(Recipe recipe) {
-        AddOrRemoveRecipeToFavorites(recipe,true);
+    public void AddRecipeToFavorites(Recipe recipe)
+    {
+      //  AddOrRemoveRecipeToFavorites(recipe,true);
     }
 
     public ArrayList<Recipe> GetUserFavoriteRecipesByLikeExp(String userId, String expression)

@@ -179,14 +179,15 @@ public class AddRecipeFragment extends Fragment
                 SaveRecipe();
                 break;
             }
-            case R.id.delete_recipe_menu_button: {
+            case R.id.delete_recipe_menu_button:
+            {
                 if (userAction == USER_ACTION.EDIT)
                 {
                     mListener.onFragmentInteraction(recipe, USER_ACTION.DELETE);
                 }
                 else
                 {
-                    //TODO: cancel add operation - back to main menu
+                    mListener.onFragmentInteraction(recipe, USER_ACTION.CANCEL);
                 }
                 break;
             }

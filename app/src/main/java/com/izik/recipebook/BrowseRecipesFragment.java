@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 
+import com.izik.recipebook.DAL.NewModel;
+
 import java.util.ArrayList;
 
 ;
@@ -176,7 +178,9 @@ public class BrowseRecipesFragment extends Fragment
 
     private void AddOrRemoveFromFavorites(Recipe recipe, int position)
     {
-        ArrayList<Recipe> favorites = Model.instance(getContext()).GetUserFavoriteRecipesById(UserID);
+        //ArrayList<Recipe> favorites = Model.instance(getContext()).GetUserFavoriteRecipesById(UserID);
+        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(getContext());
+
 
         ArrayList objIds = new ArrayList();
         for (Recipe favorite : favorites)
@@ -186,11 +190,13 @@ public class BrowseRecipesFragment extends Fragment
 
         if(objIds.contains(recipe.getObjectID()))
         {
-            Model.instance(getContext()).RemoveRecipeFromUserFavorites(recipe);
+            NewModel.instance().AddOrRemoveToFavorites(recipe,getContext() , false);
+           // Model.instance(getContext()).RemoveRecipeFromUserFavorites(recipe);
         }
         else
         {
-            Model.instance(getContext()).AddRecipeToFavorites(recipe);
+            NewModel.instance().AddOrRemoveToFavorites(recipe,getContext(), true);
+            //Model.instance(getContext()).AddRecipeToFavorites(recipe);
         }
     }
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class NewModel
 {
     private static  NewModel instance = new NewModel();
-    private User _user;
+    //private User _user;
 
     private NewModel()
     {
@@ -33,20 +33,24 @@ public class NewModel
 
     //region Public Methods
 
-    public void AddRecipe(Recipe recipe)
+    public Recipe AddRecipe(Recipe recipe)
     {
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
         JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/saveRecipe",jsonRecipe);
+
+        Recipe result = ConvertJSONToRecipe(json);
+        return result;
     }
 
     public void EditRecipe(Recipe recipe)
     {
+        //please edit the recipe only with the userID ! not objectID !
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/editRecipe",jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
@@ -78,11 +82,111 @@ public class NewModel
         return Results;
     }
 
+    public ArrayList<Recipe> GetAllUsersRecipes()
+    {
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getAllUsersRecipes", new JSONObject());
+        ArrayList<Recipe> Results = new ArrayList();
+        try {
+            JSONArray jar = json.getJSONArray("Recipes");
+            for (int i = 0; i < jar.length(); i++) {
+                Results.add(ConvertJSONToRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return Results;
+    }
+
     public User GetCurrentUser(Context mContext)
     {
-        if(_user == null)
-            _user = NewModel.instance().AssignCurrentUser(new User(mContext));
-        return _user;
+        User user = new User(mContext);
+        JSONObject jsonUser = ConvertUserToJSON(user);
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addUser", jsonUser);
+
+        User userToReturn = ConvertJSONToUser(json, mContext);
+
+        return userToReturn;
+    }
+
+    public ArrayList<Recipe> GetUserFavoriteRecipes(Context mContext)
+    {
+        User user = new User(mContext);
+        JSONObject jsonUser = ConvertUserToJSON(user);
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getUserFavoriteRecipes", jsonUser);
+
+        ArrayList<Recipe> Results = new ArrayList();
+        try {
+            JSONArray jar = json.getJSONArray("Recipes");
+            for (int i = 0; i < jar.length(); i++) {
+                Results.add(ConvertJSONToRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+     return Results;
+    }
+
+
+
+    public void AddOrRemoveToFavorites(Recipe recipe, Context mContext,boolean isAddOperation)
+    {
+        JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
+        ServerRequest serverRequest = new ServerRequest();
+        User user = new User(mContext);
+
+        try {
+            jsonRecipe.put("requestedUserID",user.getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        if(isAddOperation)
+        {
+            JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addRecipeToUserFavorites",jsonRecipe);
+        }
+        else
+        {
+            JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/removeRecipeFromUserFavorites",jsonRecipe);
+        }
+    }
+
+    private User ConvertJSONToUser(JSONObject json, Context mContext)
+    {
+        User result = new User(mContext);
+
+
+
+        try
+        {
+            JSONObject userJson = (JSONObject) json.get("user");
+            result.setObjectId(userJson.getString("_id"));
+
+            //setting user favorites
+            ArrayList<Recipe> favorites = new ArrayList<Recipe>();
+            JSONArray jar = new JSONArray(userJson.get("Favorites").toString());
+
+            for (int i=0; i<jar.length();i++)
+            {
+                JSONObject jobj = jar.getJSONObject(i);
+                Recipe favRecipe =  ConvertJSONToRecipe(jobj);
+                favorites.add(favRecipe);
+            }
+
+            result.setFavoritRecipes(favorites);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     //endregion
@@ -157,23 +261,6 @@ public class NewModel
         return jsonRecipe;
     }
 
-    private User AssignCurrentUser(User user)
-    {
-        JSONObject jsonUser = ConvertUserToJSON(user);
-        ServerRequest serverRequest = new ServerRequest();
-
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addUser", jsonUser);
-
-        _user = user;
-
-        try {
-            _user.setObjectId(json.getString("_id"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return _user;
-    }
-
     private JSONObject ConvertUserToJSON(User user)
     {
         JSONObject userJson = new JSONObject();
@@ -185,9 +272,8 @@ public class NewModel
 
             for (Recipe recipe : user.getFavoritRecipes()) {
 
-                JSONObject favoritejson = new JSONObject();
-
-                favoritejson.put("recipeID", recipe.getObjectID());
+                JSONObject favoritejson = ConvertRecipeToJSON(recipe);
+                favorites.put(favoritejson);
             }
 
             userJson.put("favorites", favorites.toString());

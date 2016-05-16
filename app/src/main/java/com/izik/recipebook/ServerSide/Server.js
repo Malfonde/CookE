@@ -37,6 +37,12 @@ app.post('/GetAllUserRecipes',function(req,res)
     bl.getUserRecipes(req ,res);
 });
 
+app.post('/getAllUsersRecipes',function(req,res)
+{
+    bl.getAllUsersRecipes(req ,res);
+});
+
+
 var os = require('os');
 
 var interfaces = os.networkInterfaces();
@@ -54,18 +60,23 @@ console.log(addresses);
 
 
 //--- Apriori Algorithm --- 
-app.post('/Server/getRecommandedRecipesByUser', function (req, res) 
+app.post('/getRecommandedRecipesByUser', function (req, res)
 {  
 	bl.getRecommandedRecipesByUser(req, res);    
 });
 
-app.post('/Server/addRecipeToUserFavorits', function (req, res) 
+app.post('/addRecipeToUserFavorites', function (req, res)
 {  
-	bl.addRecipeToUserFavorits(req, res);    
+	bl.addRecipeToUserFavorites(req, res);
 });
 
-app.post('/Server/removeRecipeFromUserFavorits', function(req,res)
+app.post('/removeRecipeFromUserFavorites', function(req,res)
 {
-    bl.removeRecipeFromUserFavorits(req,res);
+    bl.removeRecipeFromUserFavorites(req,res);
+});
+
+app.post('/getUserFavoriteRecipes', function(req,res)
+{
+    bl.getUserFavoriteRecipes(req,res);
 });
 

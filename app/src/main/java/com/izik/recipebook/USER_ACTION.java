@@ -8,5 +8,6 @@ public enum USER_ACTION
     ADD,
     DELETE,
     EDIT,
-    IMPORT
+    IMPORT,
+    CANCEL
 }

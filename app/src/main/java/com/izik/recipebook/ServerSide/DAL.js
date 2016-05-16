@@ -98,8 +98,8 @@ module.exports = {
 		var collection = connection.collection("Users");
 		
 		var result = collection.insert({
-			Favorites: newUser.favorites,
-			MachineID: newUser.UserID
+			//Favorites: newUser.favorites,
+			UserID: newUser.userID
 		}, function (err, data){
 			
 			if(err){
@@ -111,6 +111,21 @@ module.exports = {
                 callback(null, data.ops[0]);
 			}			
 		});
+	},
+
+	findUser: function (userID, callback){
+	    var collection = connection.collection("Users");
+
+        var result = collection.findOne({UserID:userID}, function(err,result){
+            if(err){
+                console.log('err: ' + err);
+                callback(err,result);
+            }
+            else
+            {
+                callback(null,result);
+            }
+        });
 	},
 	
 	
@@ -142,6 +157,7 @@ module.exports = {
     			}
     			else
     			{
+    			//todo: get reipes from recipes collection by favorites ids
     				results = favoritesList;
     				console.log(results);
     				callback(null, results);
@@ -169,11 +185,11 @@ module.exports = {
 		});
 	},
 	
-	addRecipeToUserFavorits: function (recipeToAdd, userID, callback)
+	addRecipeToUserFavorites: function (recipeToAdd, userID, callback)
 	{
         var collection = connection.collection("Users");
-        var o_id = ObjectID(userID);
-        collection.update({ _id: o_id }, { $addToSet: { Favorites: recipeToAdd }}, function(err)
+       // var o_id = ObjectID(userID);
+        collection.update({ UserID: userID }, { $addToSet: { Favorites: recipeToAdd }}, function(err)
         {
             if (err)
             {
@@ -188,11 +204,10 @@ module.exports = {
         });
     	},
 
-    removeRecipeFromUserFavorits: function (favRecipe, userID, callback)
+    removeRecipeFromUserFavorites: function (favRecipe, userID, callback)
     {
         var collection = connection.collection("Users");
-        var o_id = ObjectID(userID);
-        collection.update({ _id: o_id }, { $pull: { Favorites: favRecipe }}, function(err)
+        collection.update({ UserID: userID }, { $pull: { Favorites: favRecipe }}, function(err)
         {
             if (err)
             {

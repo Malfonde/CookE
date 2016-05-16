@@ -298,15 +298,39 @@ exports.addRecipe = function (req, res)
 	var userjson = JSON.parse(user);
 	
 	console.log("main.addUser part*****************");
-    main.addNewUser(userjson.userID,function (err, user) {
-        if (err) {
-            console.log("Faild to add new user: " + err);
+	main.findUser(userjson, function(err, user)
+	{
+	    if(err)
+	    {
+            console.log("Faild to check if the user already exists: " + err);
 			res.send(JSON.stringify({ status:"Fail", user: user }));
-        } else {
-            console.log("New user saved!");
-            res.send(JSON.stringify({ status:"Success", user: user }));
-        }
-    });
+		}
+		else
+		{
+		    if(user)
+		    {
+		        console.log("User already exists");
+		        res.send(JSON.stringify({ status:"Success", user: user }));
+		    }
+		    else
+		    {
+		       main.addNewUser(userjson,function (err, user)
+		       {
+                   if (err)
+                   {
+                        console.log("Faild to add new user: " + err);
+                        res.send(JSON.stringify({ status:"Fail", user: user }));
+                   }
+                   else
+                   {
+                       console.log("New user saved!");
+                       res.send(JSON.stringify({ status:"Success", user: user }));
+                   }
+               });
+		    }
+		}
+	});
+
  };
 
 exports.editRecipe = function (req, res)
@@ -363,14 +387,32 @@ exports.deleteRecipe = function (req, res)
      });
  };
 
- exports.addRecipeToUserFavorits = function (req,res)
+ exports.getAllUsersRecipes = function(req,res)
  {
+    console.log("main.getAllUsersRecipes part*****************");
+    main.getAllUsersRecipes(function(err, results)
+    {
+       if (err)
+       {
+         console.log("Faild to get all the recipes:  " + err);
+         res.send(JSON.stringify({ status: "Fail" }));
+       }
+       else
+       {
+         console.log("got all the recipes");
+         res.send(JSON.stringify({ Recipes: results }));
+       }
+    });
+ };
+
+ exports.addRecipeToUserFavorites = function (req,res)
+ {
+    console.log("main.addRecipeToUserFavorites part*****************");
 	 var recipe = req.body.recipe;
 	 var recipejson = JSON.parse(recipe);
+	 console.log("recipejson.requestedUserID : " + recipejson.requestedUserID);
 
-	 console.log("main.addRecipeToFavorites part*****************");
-	 
-	  main.addRecipeToUserFavorits(recipejson,userID,function (err, recipe) {
+	  main.addRecipeToUserFavorites(recipejson,recipejson.requestedUserID,function (err, recipe) {
         if (err) {
             console.log("Faild to add recipe to user favorites : " + err);
 			res.send(JSON.stringify({ status:"Fail", recipe: recipe }));
@@ -381,13 +423,13 @@ exports.deleteRecipe = function (req, res)
     });
  };
 
- exports.removeRecipeFromUserFavorits = function(req,res)
+ exports.removeRecipeFromUserFavorites = function(req,res)
  {
      var recipe = req.body.recipe;
      var recipejson = JSON.parse(recipe);
     console.log("main.removeRecipeFromUserFavorits part*****************");
 
-      main.removeRecipeFromUserFavorits(recipejson,userID,function (err, recipe) {
+      main.removeRecipeFromUserFavorites(recipejson,userID,function (err, recipe) {
             if (err) {
                 console.log("Faild to remove recipe from user favorites : " + err);
     			res.send(JSON.stringify({ status:"Fail", recipe: recipe }));
@@ -398,239 +440,29 @@ exports.deleteRecipe = function (req, res)
         });
  };
 
+ exports.getUserFavoriteRecipes = function(req,res)
+ {
+    console.log("main.getUserFavoriteRecipes part*****************");
+    var recipe = req.body.recipe;
+    var userjson = JSON.parse(recipe);
 
-
-/*exports.addSale = function (req, res, userId) {
-    main.addSale(req.body, userId, function (err, sale) {
-        if (err) {
-            console("Faild to add new sale: " + err);
-            res.json({ sale: sale });
-        } else {
-            console.log("New sale saved!");
-            res.json(sale);
+    main.findUser(userjson, function (err, user)
+    {
+        if(err)
+        {
+            console.log("Faild to find user : " + err);
+            res.send(JSON.stringify({status:"Fail"}));
+        }
+        else
+        {
+            console.log("Success in finding user : ");
+            res.send(JSON.stringify({status:"Success", Recipes:user.Favorites}));
         }
     });
-};*/
-
-/*
-// --- Shows ---
-
-exports.addShow = function (req, res, userId) {
-
-    main.queryUserByID(userId, function (userErr, user) {
-
-        if (userErr) {
-            console("Faild to add new show (queryUserByID): " + userErr);
-            res.json({ status: "Failed" });
-        } else {
-
-            if (user != undefined) {
-                if (user.role == 0) {
-                    console.log("Here");
-                    main.addShow(req.body, function (err, show) {
-                        if (err) {
-                            console("Faild to add new show: " + err);
-                            res.json({ status: "Failed" });
-                        } else {
-                            console.log("New show saved!");
-                            res.json({
-                                status: "Success",
-                                show: show
-                            });
-                        }
-                    });
-                }
-                else {
-                    res.json({
-                        status: "No Admin"
-                    });
-                }
-            }
-            else {
-                res.json({
-                    status: "User Not Found"
-                });
-            }
-        }
-    });
-};
-
-
-// --- Users ---
-
-exports.register = function (req, res) {
-    console.log("BL register");
-
-    main.getUserByUsername({ username: req.body.Username }, function (err, resultUser) {
-
-        if (err) {
-            console.log("Faild to check if user exists: " + err);
-            res.json({ status: "Failed To Check Username" });
-        } else {
-
-            if (resultUser == undefined || resultUser == null) {
-
-                main.register(req.body, function (regErr, user) {
-                    if (regErr) {
-                        console.log("Faild to add new user: " + regErr);
-                        res.json({ status: "Failed To Add User" });
-                    } else {
-                        console.log("New user saved!");
-                        res.json({
-                            status: "Success",
-                            user: user
-                        });
-                    }
-                });
-            }
-            else {
-                console.log("User with the same username already exists.");
-                res.json({ status: "Username Already Exists" });
-            }
-        }
-    })
-};
-
-
-// -----------------------------------
-// ------------- Update --------------
-// -----------------------------------
-
-// --- Sales ---  
-
-exports.updateSale = function (req, res, userId) {
-    var saleQuery = [{ id: req.body.id }];
-
-    if (userId == "undefined") {
-        res.json({ status: "No Logged In User" });
-    }
-    else {
-        console.log("**********************************");
-        console.log(saleQuery);
-        main.querySales(saleQuery, function (err, sale) {
-            if (err) {
-                console.log('error bl - querySales: ' + err);
-                res.json({ sales: sales });
-            } else {
-                console.log("sale");
-                console.log(sale);
-                console.log("userId");
-                console.log(userId);
-                if (sale[0].UserID != userId) {
-                    console.log("The user not permitted to edit");
-                    res.json({ status: "permissionError" });
-                }
-                else {
-                    main.updateSale(req.body, function (err, sale) {
-                        if (err) {
-                            console.log("Faild to update sale: " + err);
-                            res.json({ status: "Failed" });
-                        } else {
-                            console.log("updated sale saved!");
-                            res.json({ status: "Success" });
-                        }
-                    });
-                }
-            }
-        });
-    }
-};
-
-
-// --- Shows ---
-
-exports.updateShow = function (req, res, userId) {
-
-    main.queryUserByID(userId, function (userErr, user) {
-
-        if (userErr) {
-            console("Faild to update show (queryUserByID): " + userErr);
-            res.json({ status: "Failed" });
-        } else {
-
-            if (user != undefined) {
-                if (user.role == 0) {
-                    main.updateShow(req.body, function (err, show) {
-                        if (err) {
-                            console.log("Faild to update show: " + err);
-                            res.json({ status: "Failed" });
-                        } else {
-                            console.log("updated sale saved!");
-                            res.json({ status: "Success", show: show });
-                        }
-                    });
-                }
-                else {
-                    res.json({
-                        status: "No Admin"
-                    });
-                }
-            }
-            else {
-                res.json({
-                    status: "User Not Found"
-                });
-            }
-        }
-    })
-};
-
-// --- Apriori ---
-exports.testA = function (req, res) {
-    main.aprioriTest(function (err, results) {
-        if (err) {
-            console.log("Error");
-            res.json({ Status: "Kaki" });
-        }
-        else {
-            console.log(results);
-        }
-    });
-};
-
-exports.recommandByEvent = function (req, res) {
-    main.getWatchLists(function (err, results) {
-        if (err) {
-            console.log(err);
-            res.json({ Status: "Fail" });
-        }
-        else {
-
-            var aprioriRes = getAprioriResults([req.body.eventID], results);
-
-            console.log(aprioriRes);
-
-            if (aprioriRes.length > 0) {
-
-                var idsJson = [];
-                aprioriRes.forEach(function (currId) {
-                    idsJson.push({ id: currId });
-                });
-
-                main.queryShows(idsJson, function (showsErr, retShows) {
-                    if (showsErr) {
-                        console.log(showsErr);
-                        res.json({ Status: "Fail" });
-                    }
-                    else {
-                        console.log(retShows);
-                        console.log("recommandByEvent success!!");
-                        res.json(retShows);
-                    }
-                });
-            }
-            else {
-                console.log("There were no results found");
-                res.json({ status: "No Results" });
-            }
-        }
-    });
-};
-
+ };
 
 
 //---- Apriori Methods ----
-*/
 
 exports.getRecommandedRecipesByUser = function (req, res)
   {
@@ -639,7 +471,7 @@ exports.getRecommandedRecipesByUser = function (req, res)
  	var userFromClient = req.body.user; // Getting the parameters
  	var userjson = JSON.parse(userFromClient);
 
- 	main.queryUserByID(userjson.userID, function (errUser, user)
+ 	main.findUser(userjson, function (errUser, user)
  	{
  		main.getAllFavoriteLists(function (err, results)
  		{

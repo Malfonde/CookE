@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -117,7 +119,6 @@ public class ServerRequest
         }
         return jobj;
     }
-
 
     private class Request extends AsyncTask<ContentValues, String, JSONObject> {
 

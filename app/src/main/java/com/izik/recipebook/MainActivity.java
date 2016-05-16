@@ -92,8 +92,6 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         return true;
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -304,7 +302,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     {
         BrowseRecipesFragment fragment = new BrowseRecipesFragment();
         final Bundle bundle = new Bundle();
-        bundle.putString("User_ID",User.getObjectId());
+        bundle.putString("User_ID", User.getObjectId());
         fragment.setArguments(bundle);
         ShowFragment(fragment);
     }
@@ -315,8 +313,8 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         //TODO: shouldn't this be a switch case?
         if(action == USER_ACTION.ADD)
         {
-            User.getUserRecipes().add(recipe);
-            Model.instance(this).AddRecipe(recipe);
+            //Model.instance(this).AddRecipe(recipe);
+            User.getUserRecipes().add(NewModel.instance().AddRecipe(recipe));
         }
         if(action == USER_ACTION.EDIT)
         {
@@ -326,7 +324,12 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         if(action == USER_ACTION.DELETE)
         {
             User.getUserRecipes().remove(recipe);
-            Model.instance(this).DeleteRecipe(recipe);
+            Model.instance(this).DeleteRecipe(recipe); // we need to put newmodel here to delete from db
+        }
+
+        if(action == USER_ACTION.CANCEL)
+        {
+            // DO NOTHING...
         }
 
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
