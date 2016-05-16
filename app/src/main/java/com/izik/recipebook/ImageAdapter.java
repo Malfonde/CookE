@@ -97,6 +97,14 @@ public class ImageAdapter extends BaseAdapter
         return  allRecipes;
     }
 
+    public  ArrayList<Recipe> setRecommandedRecipes()
+    {
+        ArrayList<Recipe> allRecipes = NewModel.instance().GetRecommandedRecipes(mContext);
+        mThumbIds = GetAllImagesFromArrayList(allRecipes);
+        return  allRecipes;
+    }
+
+
     public ArrayList<Recipe> setRecipesBy(String likeExpression, boolean findThisUserRecipes) {
 
         ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);

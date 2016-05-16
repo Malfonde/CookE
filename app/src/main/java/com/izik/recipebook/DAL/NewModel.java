@@ -50,7 +50,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/editRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/editRecipe", jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
@@ -100,6 +100,27 @@ public class NewModel
         return Results;
     }
 
+    public ArrayList<Recipe> GetRecommandedRecipes(Context mContext)
+    {
+        User user = new User(mContext);
+        JSONObject jsonUser = ConvertUserToJSON(user);
+
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getRecommandedRecipesByUser",jsonUser);
+        ArrayList<Recipe> Results = new ArrayList();
+        try {
+            JSONArray jar = json.getJSONArray("Recipes");
+            for (int i = 0; i < jar.length(); i++) {
+                Results.add(ConvertJSONToRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return Results;
+    }
+
     public User GetCurrentUser(Context mContext)
     {
         User user = new User(mContext);
@@ -123,7 +144,7 @@ public class NewModel
         try {
             JSONArray jar = json.getJSONArray("Recipes");
             for (int i = 0; i < jar.length(); i++) {
-                Results.add(ConvertJSONToRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
+                Results.add(ConvertJSONToFavoriteRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
 
             }
         } catch (JSONException e) {
@@ -137,7 +158,7 @@ public class NewModel
 
     public void AddOrRemoveToFavorites(Recipe recipe, Context mContext,boolean isAddOperation)
     {
-        JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
+        JSONObject jsonRecipe = ConvertFavoriteRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
         User user = new User(mContext);
 
@@ -193,6 +214,80 @@ public class NewModel
 
     //region Private
 
+    private Recipe ConvertJSONToFavoriteRecipe(JSONObject jsonRecipe)
+    {
+        Recipe ret = new Recipe("","","","",new ArrayList<Ingredient>(),"","","");
+        try {
+            ret.setName(jsonRecipe.get("name").toString());
+            ret.setDescription(jsonRecipe.get("description").toString());
+            ret.setCookingInstructions(jsonRecipe.get("cookingInstructions").toString());
+            ret.setServingInstructions(jsonRecipe.get("servingInstructions").toString());
+            ret.setUserId(jsonRecipe.get("userID").toString());
+            ret.setImage(jsonRecipe.get("image").toString());
+            ret.setObjectID(jsonRecipe.get("objectID").toString());
+            ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+            JSONArray jar = new JSONArray(jsonRecipe.get("ingredients").toString());
+
+            for (int i=0; i<jar.length();i++)
+            {
+                JSONObject jobj = jar.getJSONObject(i);
+                Ingredient ing = new Ingredient(jobj.get("name").toString(), Double.valueOf(jobj.get("quantity").toString()));
+                ingredients.add(ing);
+            }
+
+            ret.setIngredients(ingredients);
+
+        }
+        catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+
+    private JSONObject ConvertFavoriteRecipeToJSON(Recipe recipe)
+    {
+        JSONObject jsonRecipe = new JSONObject();
+        try {
+
+            jsonRecipe.put("name", recipe.getName());
+            jsonRecipe.put("description", recipe.getDescription());
+            jsonRecipe.put("cookingInstructions", recipe.getCookingInstructions());
+            jsonRecipe.put("servingInstructions", recipe.getServingInstructions());
+            jsonRecipe.put("userID", recipe.getUserId());
+            jsonRecipe.put("image", recipe.getImage());
+            jsonRecipe.put("objectID", recipe.getObjectID());
+
+            JSONArray ingredients = new JSONArray();
+
+            for (Ingredient ingredient : recipe.getIngrediants()) {
+
+                JSONObject ingredientjson = new JSONObject();
+
+                ingredientjson.put("name", ingredient.getName());
+                ingredientjson.put("quantity", ingredient.getQuantity());
+                ingredients.put(ingredientjson);
+            }
+
+            jsonRecipe.put("ingredients", ingredients.toString());
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return jsonRecipe;
+    }
+
+
+
+
+
+
+
+
     private Recipe ConvertJSONToRecipe(JSONObject jsonRecipe)
     {
         Recipe ret = new Recipe("","","","",new ArrayList<Ingredient>(),"","","");
@@ -240,6 +335,7 @@ public class NewModel
             jsonRecipe.put("userID", recipe.getUserId());
             jsonRecipe.put("image", recipe.getImage());
 
+
             JSONArray ingredients = new JSONArray();
 
             for (Ingredient ingredient : recipe.getIngrediants()) {
@@ -285,6 +381,8 @@ public class NewModel
 
         return userJson;
     }
+
+
 
     //endregion
 

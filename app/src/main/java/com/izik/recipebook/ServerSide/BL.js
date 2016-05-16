@@ -515,7 +515,7 @@ exports.getRecommandedRecipesByUser = function (req, res)
  
 var getAprioriResults = function (arrayToFind, allLists)
 {
-
+    console.log("getAprioriResults part ********************************");
     var algResults = new Apriori.Algorithm(0.4, 0.6, false).analyze(allLists);
     var associationRules = algResults.associationRules;
 
@@ -548,7 +548,7 @@ var getAprioriResults = function (arrayToFind, allLists)
             }
         }
     };
-
+console.log("the results are : maxRhs **************** " + maxRhs);
     return maxRhs;
 };
 

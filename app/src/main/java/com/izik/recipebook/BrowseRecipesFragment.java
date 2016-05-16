@@ -65,7 +65,9 @@ public class BrowseRecipesFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         imageAdapter = new ImageAdapter(getActivity().getResources(), getContext());
         input_browseRecipes = (EditText) view.findViewById(R.id.input_browseRecipes);
-        allRecipes = imageAdapter.setRecipesFromAllUsers();
+
+        //allRecipes = imageAdapter.setRecipesFromAllUsers();
+        allRecipes = imageAdapter.setRecommandedRecipes();
 
         gridview = (GridView) view.findViewById(R.id.AllBrowsedRecipesGridView);
         gridview.setAdapter(imageAdapter);
