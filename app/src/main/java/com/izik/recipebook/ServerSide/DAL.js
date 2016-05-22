@@ -51,10 +51,10 @@ module.exports = {
     },
 
     editRecipe: function (recipe, callback) {
+        var o_id = ObjectID(recipe._id);
         var collection = connection.collection("Recipes");
-
         var result = collection.update(
-        {_id: recipe.objectId },
+        {_id: o_id },
         {Name: recipe.name,
         UserID: recipe.userID,
         CookingInstructions: recipe.cookingInstructions,
@@ -62,14 +62,15 @@ module.exports = {
         Description: recipe.description,
         Ingredients: recipe.ingredients,
         ImagePath: recipe.image
-        }, function (err, data) {
+        }, function (err, numberOfRecordsUpdatedJson) {
             if (err) {
                     console.log('edit recipe error: ' + err);
-                    callback(err, data);
+                    callback(err, objectWithStatusOperation);
                 }
                 else {
                     console.log('edit recipe success');
-                    callback(null, data.ops[0]);
+                    console.log('number of records Changed : ' + numberOfRecordsUpdatedJson);
+                    callback(null, numberOfRecordsUpdatedJson);
                 }
         });
     },

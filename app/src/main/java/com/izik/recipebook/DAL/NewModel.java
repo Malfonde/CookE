@@ -6,8 +6,6 @@ import com.izik.recipebook.Ingredient;
 import com.izik.recipebook.Recipe;
 import com.izik.recipebook.ServerSideHandlers.ServerRequest;
 import com.izik.recipebook.User;
-import com.parse.ParseQuery;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -246,7 +244,6 @@ public class NewModel
         return ret;
     }
 
-
     private JSONObject ConvertFavoriteRecipeToJSON(Recipe recipe)
     {
         JSONObject jsonRecipe = new JSONObject();
@@ -280,13 +277,6 @@ public class NewModel
 
         return jsonRecipe;
     }
-
-
-
-
-
-
-
 
     private Recipe ConvertJSONToRecipe(JSONObject jsonRecipe)
     {
@@ -334,6 +324,7 @@ public class NewModel
             jsonRecipe.put("servingInstructions", recipe.getServingInstructions());
             jsonRecipe.put("userID", recipe.getUserId());
             jsonRecipe.put("image", recipe.getImage());
+            jsonRecipe.put("_id", recipe.getObjectID());
 
 
             JSONArray ingredients = new JSONArray();
@@ -381,8 +372,6 @@ public class NewModel
 
         return userJson;
     }
-
-
 
     //endregion
 
