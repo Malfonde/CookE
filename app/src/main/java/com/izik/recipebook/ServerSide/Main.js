@@ -67,10 +67,10 @@ module.exports = {
 		});
 	},
 
-	findUser: function(userToVerify, callback){
+	findUser: function(userID, callback){
         console.log('main - findUser');
-        console.log(userToVerify);
-        Dal.findUser(userToVerify.userID, function(err,user)
+        console.log(userID);
+        Dal.findUser(userID, function(err,user)
         {
             if(err){
                 console.log('find user error: ' + err);

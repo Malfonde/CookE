@@ -116,7 +116,7 @@ public class BrowseRecipesFragment extends Fragment
 
     private void SetGridView(String expression)
     {
-        allRecipes = imageAdapter.setRecipesBy(expression, false);
+        allRecipes = imageAdapter.setRecipesBy(expression, false,"");
         imageAdapter.notifyDataSetChanged();
     }
 
@@ -182,7 +182,7 @@ public class BrowseRecipesFragment extends Fragment
     private void AddOrRemoveFromFavorites(Recipe recipe, int position)
     {
         //ArrayList<Recipe> favorites = Model.instance(getContext()).GetUserFavoriteRecipesById(UserID);
-        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(getContext());
+        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(UserID);
 
 
         ArrayList objIds = new ArrayList();

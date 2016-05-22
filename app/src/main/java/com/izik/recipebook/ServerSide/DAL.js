@@ -117,13 +117,14 @@ module.exports = {
 	findUser: function (userID, callback){
 	    var collection = connection.collection("Users");
 
-        var result = collection.findOne({UserID:userID}, function(err,result){
+        var result = collection.findOne({UserID: userID}, function(err,result){
             if(err){
                 console.log('err: ' + err);
                 callback(err,result);
             }
             else
             {
+                console.log('!@#!@#!@#!@!#@!#@ found 1 user !#!@#!@#!@#!@#!@# : ' + result);
                 callback(null,result);
             }
         });

@@ -1,274 +1,7 @@
 ﻿var main = require('./Main')
   , Apriori = require('apriori')
   , Underscore = require('underscore');
-/*
-// -----------------------------------
-// ------------- Queries -------------
-// -----------------------------------
 
-// --- Sales ---
-
-exports.querySales = function (req, res) {
-    console.log('bl - querySales');
-    main.querySales(req.body, function (err, sales) {
-        if (err) {
-            console.log('error bl - querySales: ' + err);
-            res.json({ sales: sales });
-        } else {
-            console.log('query sales success');
-
-            res.json(sales);
-        }
-    });
-};
-
-exports.concertSalesWithUserDetails = function (req, res) {
-    // Get concert's sales by its id
-    main.querySales(req.body, function (err, sales) {
-        if (err) {
-            console.log("error bl - concertSalesWithUserDetails " + err);
-            res.json({ status: "Fail" });
-        } else {
-            console.log("concertSalesWithUserDetails succeed");
-            fillUsersInfo(sales, 0, function (err, r) {
-                console.log("Finished!");
-                console.log(r);
-                res.json(sales);
-            });
-
-        }
-    });
-};
-
-
-var fillUsersInfo = function (sales, currentSale, callback) {
-    if (currentSale < sales.length) {
-        main.queryUserByID(sales[currentSale].UserID, function (err, userDetailes) {
-            console.log("after queryUserById");
-            if (err != null)
-                console.log("error in queryUserById : " + err);
-
-            // Add the detailes to the json
-            sales[currentSale]["SellerName"] = userDetailes.username;
-            sales[currentSale]["SellerEmail"] = userDetailes.email;
-            sales[currentSale]["SellerPhone"] = userDetailes.phoneNumber;
-            sales[currentSale]["Pic"] = userDetailes.Pic;
-
-            fillUsersInfo(sales, currentSale + 1, callback);
-        });
-    }
-    else {
-        callback(null, sales);
-    }
-};
-
-exports.getSaleDetailsForUpdate = function (req, res, userId) {
-    main.querySales(req.body, function (err, sales) {
-        if (err) {
-            if (err == "Wrong ID") {
-                console.log('error bl - getSaleDetailsForUpdate: ' + err);
-                res.json({ status: "Wrong ID" });
-            }
-            else {
-                console.log('error bl - getSaleDetailsForUpdate: ' + err);
-                res.json({ status: "Fail" });
-            }
-        } else {
-            if (sales.length == 0) {
-                res.json({ status: "Sale Not Found" });
-            } else {
-                if (sales[0].UserID == userId) {
-                    res.json({
-                        status: "Success",
-                        sale: sales[0]
-                    });
-                } else {
-                    res.json({
-                        status: "Wrong User"
-                    });
-                }
-            }
-        }
-    });
-};
-
-// --- Shows ---
-
-exports.queryShows = function (req, res) {
-    console.log('bl - queryShows');
-    main.queryShows(req.body, function (err, shows) {
-        if (err) {
-            console.log('error bl - queryShows: ' + err);
-            res.json({
-                status: "Fail",
-                shows: shows
-            });
-        } else {
-            console.log('query events success');
-
-            res.json({
-                status: "Success",
-                results: shows
-            });
-        }
-    });
-};
-
-// Quering the show with the most sales 
-exports.queryMostPopularEvent = function (req, res) {
-    main.queryMostPopularEvent
-}
-
-exports.popularEvents = function (req, res) {
-    main.getWatchLists(function (err, results) {
-        if (err) {
-            res.json({ status: "Fail" });
-        }
-        else {
-            var algRes = getAprioriPopular(results);
-
-            if (algRes.length > 0) {
-
-                var idsJson = [];
-                algRes.forEach(function (currId) {
-                    idsJson.push({ id: currId });
-                });
-
-                main.queryShows(idsJson, function (showsErr, retShows) {
-                    if (showsErr) {
-                        console.log(showsErr);
-                        res.json({ status: "Fail" });
-                    }
-                    else {
-                        console.log(retShows);
-                        console.log("getAprioriPopular success!!");
-                        res.json({
-                            status: "No LoggedOn User",
-                            popEvents: retShows
-                        });
-                    }
-                });
-            }
-        }
-    });
-};
-
-
-// --- User ---
-
-exports.getUserByUsername = function (req, res, userIdFromCookies) {
-
-    console.log(req.body.Username);
-
-    main.getUserByUsername({ username: req.body.Username }, function (err, resultUser) {
-
-        if (err) {
-            console.log('error bl - getUserByUsername: ' + err);
-            res.json({ status: "Failed To Get User By Username" });
-        } else {
-            console.log('query getUserByUsername success');
-
-            if (resultUser != undefined && resultUser != null) {
-                console.log(resultUser._id);
-
-                if (resultUser._id == userIdFromCookies) {
-                    res.json({ status: "Success", user: resultUser });
-                }
-                else {
-                    res.json({ status: "Not The Logged User" });
-                }
-            }
-            else {
-                res.json({ status: "User Not Found" });
-            }
-        }
-
-    });
-};
-
-exports.getUserById = function (req, res, userIdFromCookies) {
-
-    console.log(req.body.Username);
-
-    main.queryUserByID(userIdFromCookies, function (err, resultUser) {
-
-        if (err) {
-            console.log('error bl - getUserById: ' + err);
-            res.json({ status: "Failed To Get User By ID" });
-        } else {
-            console.log('query getUserById success');
-
-            if (resultUser != undefined && resultUser != null) {
-                res.json({ status: "Success", user: resultUser });
-            }
-            else {
-                res.json({ status: "User Not Found" });
-            }
-        }
-
-    });
-};
-
-exports.userLocation = function (req, res, userIdFromCookies) {
-
-    main.queryUserByID(userIdFromCookies, function (errUser, user) {
-        if (errUser) {
-            console.log(errUser);
-            res.json({ status: "Fail" });
-        }
-        else {
-            console.log("get userLocation success");
-            res.json({
-                status: "Success",
-                userDetails: {
-                    fullAddress: user.fullAddress
-                    //city: user.city,
-                    //address: user.address
-                }
-            });
-        }
-    });
-};
-
-// -----------------------------------
-// ------------- Delete --------------
-// -----------------------------------
-
-// --- Sales ---
-
-exports.deleteConcertSale = function (req, res, userId) {
-    var saleQuery = [{ id: req.params.id }];
-
-    if (userId == "undefined") {
-        res.json({ status: "No Logged In User" });
-    }
-    else {
-        main.querySales(saleQuery, function (err, sale) {
-            if (err) {
-                console.log('error bl - querySales: ' + err);
-                res.json({ status: "Fail", sales: sales });
-            } else {
-                if (sale != undefined && sale[0].UserID != userId) {
-                    console.log("The user not permitted to delete");
-                    res.json({ status: "permissionError" });
-                }
-                else {
-                    main.deleteSale(req.params.id, function (err, updateConcert) {
-                        if (err) {
-                            console("Failed to delete sale: " + err);
-                            res.json({ status: "Fail" });
-                        } else {
-                            res.json({ status: "Success", sale: updateConcert });
-                        }
-                    });
-                }
-            }
-        });
-    }
-};
-
-
-*/
 // -----------------------------------
 // -------------- Add ----------------
 // -----------------------------------
@@ -298,7 +31,7 @@ exports.addRecipe = function (req, res)
 	var userjson = JSON.parse(user);
 	
 	console.log("main.addUser part*****************");
-	main.findUser(userjson, function(err, user)
+	main.findUser(userjson.userID, function(err, user)
 	{
 	    if(err)
 	    {
@@ -430,7 +163,7 @@ exports.deleteRecipe = function (req, res)
      var recipejson = JSON.parse(recipe);
     console.log("main.removeRecipeFromUserFavorits part*****************");
 
-      main.removeRecipeFromUserFavorites(recipejson,userID,function (err, recipe) {
+      main.removeRecipeFromUserFavorites(recipejson,recipejson.requestedUserID,function (err, recipe) {
             if (err) {
                 console.log("Faild to remove recipe from user favorites : " + err);
     			res.send(JSON.stringify({ status:"Fail", recipe: recipe }));
@@ -447,7 +180,7 @@ exports.deleteRecipe = function (req, res)
     var recipe = req.body.recipe;
     var userjson = JSON.parse(recipe);
 
-    main.findUser(userjson, function (err, user)
+    main.findUser(userjson.userID, function (err, user)
     {
         if(err)
         {
@@ -471,7 +204,7 @@ exports.getRecommandedRecipesByUser = function (req, res)
  	var userFromClient = req.body.recipe; // Getting the parameters
  	var userjson = JSON.parse(userFromClient);
 
- 	main.findUser(userjson, function (errUser, user)
+ 	main.findUser(userjson.userID, function (errUser, user)
  	{
  		main.getAllFavoriteLists(function (err, results)
  		{

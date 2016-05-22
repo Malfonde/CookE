@@ -105,9 +105,10 @@ public class ImageAdapter extends BaseAdapter
     }
 
 
-    public ArrayList<Recipe> setRecipesBy(String likeExpression, boolean findThisUserRecipes) {
+    public ArrayList<Recipe> setRecipesBy(String likeExpression, boolean findThisUserRecipes,String currentUserID) {
 
-        ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);
+        //ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);
+        ArrayList<Recipe> likeExpressionRecipes = NewModel.instance().GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes,currentUserID);
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }
@@ -139,7 +140,7 @@ public class ImageAdapter extends BaseAdapter
     public ArrayList<Recipe> setFavoriteRecipesByUserId(String UserId)
     {
        // ArrayList<Recipe> favorites = Model.instance(mContext).GetUserFavoriteRecipesById(UserId);
-        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(mContext);
+        ArrayList<Recipe> favorites = NewModel.instance().GetUserFavoriteRecipes(UserId);
         mThumbIds = GetAllImagesFromArrayList(favorites);
 
         return favorites;
@@ -147,7 +148,8 @@ public class ImageAdapter extends BaseAdapter
 
     public ArrayList<Recipe> setUserFavoriteRecipesByExpression(String userId, String expression)
     {
-        ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetUserFavoriteRecipesByLikeExp(userId, expression);
+        //ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetUserFavoriteRecipesByLikeExp(userId, expression);
+        ArrayList<Recipe> likeExpressionRecipes = NewModel.instance().GetUserFavoriteRecipesByLikeExp(userId, expression);
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }

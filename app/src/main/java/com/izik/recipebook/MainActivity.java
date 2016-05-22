@@ -155,7 +155,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
     private void SetGridView(String expression)
     {
-        this.User.setUserRecipes(imageAdapter.setRecipesBy(expression, true));
+        this.User.setUserRecipes(imageAdapter.setRecipesBy(expression, true, this.User.getId()));
         imageAdapter.notifyDataSetChanged();
     }
 
@@ -304,7 +304,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     {
         BrowseRecipesFragment fragment = new BrowseRecipesFragment();
         final Bundle bundle = new Bundle();
-        bundle.putString("User_ID", User.getObjectId());
+        bundle.putString("User_ID", User.getId());
         fragment.setArguments(bundle);
         ShowFragment(fragment);
     }

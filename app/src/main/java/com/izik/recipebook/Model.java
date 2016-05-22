@@ -40,59 +40,6 @@ public class Model
 
     }
 
-    private User AssignCurrentUser()
-    {
-        final User user = new User(mContext);
-        final ParseQuery query = new ParseQuery(USERRECIPEBOOK);
-        query.whereEqualTo(USER_ID, user.getId());
-        ParseObject obj = null;
-
-        try
-        {
-            obj = query.getFirst();
-        }
-        catch (ParseException e)
-        {
-            if(e.getCode() == 101)
-            {
-                SaveCurrentUser(user);
-                return user;
-            }
-
-            WriteParseExceptionToLog(e);
-        }
-
-        if(obj != null)
-        {
-            ParseRelation<ParseObject> favoritesRelation = obj.getRelation(FAVORITES);
-
-            favoritesRelation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
-                    if (e != null) {
-                        Log.e("RecipeBook", e.getMessage());
-                    } else {
-                        ArrayList<Recipe> output = new ArrayList<Recipe>();
-
-                        for (ParseObject obj : objects) {
-                            ParseQuery favoritesQuery = new ParseQuery("Recipe");
-                            favoritesQuery.whereEqualTo(OBJECT_ID, obj.getObjectId());
-                            output.add(GetRecipesByQuery(query).get(0));
-                        }
-
-                        user.setFavoritRecipes(output);
-                    }
-                }
-            });
-
-            user.setObjectId(obj.getObjectId());
-        }
-
-
-        _user = user;
-        return _user;
-    }
-
     public static Model instance(Context context)
     {
         if (context instanceof OnModelCompletedOperationListener)
@@ -109,130 +56,16 @@ public class Model
         return instance;
     }
 
-    public void AddRecipe(Recipe recipe)
-    {
-        NewModel newModel = NewModel.instance();
-        newModel.AddRecipe(recipe);
 
-        ParseObject myObj = new ParseObject("Recipe");
-        myObj.put(USER_ID, recipe.getUserId());
-        myObj.put(NAME, recipe.getName());
-        myObj.put(DESC, recipe.getDescription());
-        myObj.put(IMAGE, recipe.getImage());
-        myObj.put(COOKING_INSTR, recipe.getCookingInstructions());
-        myObj.put(SERVING_INSTR, recipe.getServingInstructions());
 
-        ParseRelation<ParseObject> ingredientsRelation = myObj.getRelation(INGREDIENTS);
-        //sacing each ingredient in cloud db
-        SaveIngridientsListOfRecipe(recipe, ingredientsRelation);
-
-        try
-        {
-            myObj.save();
-            mListener.onAddRecipeComplete(true);
-            recipe.setObjectID(myObj.getObjectId());
-            allCurrentUserRecipes.add(recipe);
-        }
-        catch (ParseException e)
-        {
-            mListener.onAddRecipeComplete(false);
-        }
-    }
-
-    private void SaveIngridientsListOfRecipe(Recipe recipe, ParseRelation<ParseObject> ingredientsRelation)
-    {
-        for (Ingredient ingredient : recipe.getIngrediants()) {
-            ParseObject ingredientObj = new ParseObject("Ingredient");
-            ingredientObj.put(NAME, ingredient.getName());
-            ingredientObj.put(QUANTITY, ingredient.getQuantity());
-            ingredientsRelation.add(ingredientObj);
-
-            try
-            {
-                ingredientObj.save();
-                mListener.onAddIngredientToRecipeComplete(true, "");
-            }
-            catch (ParseException e)
-            {
-                mListener.onAddIngredientToRecipeComplete(false, e.getMessage());
-            }
-        }
-    }
-
-    /*public void AddOrRemoveRecipeToFavorites(Recipe recipe, boolean isAddOperation)
-    {
-        ParseQuery query = new ParseQuery(USERRECIPEBOOK);
-        query.whereEqualTo(OBJECT_ID, GetCurrentUser().getObjectId());
-
-        try
-        {
-            ParseObject userObj = query.getFirst();
-            ParseRelation<ParseObject> relation = userObj.getRelation(FAVORITES);
-            ParseQuery recipeQuery = new ParseQuery("Recipe");
-            recipeQuery.whereEqualTo(OBJECT_ID, recipe.getObjectID());
-
-            ParseObject recipeObj = recipeQuery.getFirst();
-
-            if(isAddOperation) {
-                relation.add(recipeObj);
-            }
-            else
-            {
-                relation.remove(recipeObj);
-            }
-
-            userObj.save();
-
-        }
-        catch (ParseException e)
-        {
-            WriteParseExceptionToLog(e);
-            mListener.onaddOrRemoveFavoritesFail(recipe, isAddOperation);
-        }
-
-        mListener.onaddOrRemoveFavoritesSuccess(recipe, isAddOperation);
-
-    }*/
-
-    private void WriteParseExceptionToLog(ParseException e)
+ /*   private void WriteParseExceptionToLog(ParseException e)
     {
         Log.e("RecipeBook", e.getMessage());
     }
 
 
-    public ArrayList<Recipe> GetAllUserRecipesByID(String id)
-    {
-//        ParseQuery query = new ParseQuery("Recipe");
-//        query.whereEqualTo(USER_ID, id);
-//
-//        allCurrentUserRecipes = GetRecipesByQuery(query);
-//
-//        return allCurrentUserRecipes;
-
-        NewModel newModel = NewModel.instance();
-        return newModel.GetAllUserRecipesByID(id);
-    }
-
-    public ArrayList<Recipe>  GetAllUsersRecipes()
-    {
-        ParseQuery query = new ParseQuery("Recipe");
-        if(allCurrentUserRecipes.size() != 0)
-        {
-            query.whereNotEqualTo(USER_ID, allCurrentUserRecipes.get(0).getUserId());
-        }
-        else
-        {
-            User user = new User(mContext);
-            query.whereNotEqualTo(USER_ID, user.getId());
-        }
-
-        ArrayList<Recipe> output = GetRecipesByQuery(query);
-        allRecipes = output;
-
-        return allRecipes;
-    }
-
-    private ArrayList<Recipe> GetRecipesByQuery(ParseQuery query)
+*/
+   /* private ArrayList<Recipe> GetRecipesByQuery(ParseQuery query)
     {
         ArrayList<Recipe> output = new ArrayList<>();
 
@@ -264,8 +97,8 @@ public class Model
 
         return output;
     }
-
-    private ArrayList<Ingredient> GetIngredientsByIngredientsRelation(ParseRelation<ParseObject> relation)
+*/
+  /*  private ArrayList<Ingredient> GetIngredientsByIngredientsRelation(ParseRelation<ParseObject> relation)
     {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
 
@@ -287,26 +120,8 @@ public class Model
 
         return ingredients;
     }
-
-    private void DeleteIngredientsInIngredientsRelation(ParseRelation<ParseObject> relation)
-    {
-        //get all ingredients of a recipe and delte them
-        try
-        {
-            List<ParseObject> ingredientObjects = relation.getQuery().find();
-
-            for (ParseObject obj : ingredientObjects)
-            {
-                relation.remove(obj);
-            }
-        }
-        catch (ParseException e)
-        {
-            WriteParseExceptionToLog(e);
-        }
-    }
-
-    public ArrayList<Recipe> GetAllUsersRecipesByLikeExp(String likeExpression, boolean findThisUserRecipes)
+*/
+    /*public ArrayList<Recipe> GetAllUsersRecipesByLikeExp(String likeExpression, boolean findThisUserRecipes)
     {
         if(!findThisUserRecipes) {
             return GetSubListByExpression(likeExpression, allRecipes);
@@ -315,9 +130,9 @@ public class Model
         {
             return GetSubListByExpression(likeExpression, allCurrentUserRecipes);
         }
-    }
+    }*/
 
-    public ArrayList<Recipe> GetUserFavoriteRecipesById(String user_Id)
+ /*   public ArrayList<Recipe> GetUserFavoriteRecipesById(String user_Id)
     {       
         final ParseQuery query = new ParseQuery(USERRECIPEBOOK);
         query.whereEqualTo(USER_ID, user_Id);
@@ -345,53 +160,9 @@ public class Model
             return new ArrayList<>();
         }
     }
+*/
 
-    public void DeleteRecipe(Recipe recipe)
-    {
-        final Recipe thisRecipe = recipe;
-        ParseQuery query = new ParseQuery("Recipe");
-        query.whereEqualTo(OBJECT_ID, recipe.getObjectID());
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (objects.size() != 0) {
-                    if (objects.size() > 1) {
-                        Log.e("RecipieBook",
-                                "There are more then one object with the same object id : "
-                                        + thisRecipe.getObjectID());
-                    }
-
-                    objects.get(0).deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                mListener.onDeleteRecipeComplete(true);
-                            } else {
-                                mListener.onDeleteRecipeComplete(false);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-
-        allCurrentUserRecipes.remove(recipe);
-    }
-
-    public void RemoveRecipeFromUserFavorites(Recipe recipe)
-    {
-       // AddOrRemoveRecipeToFavorites(recipe, false);
-    }
-
-    public User GetCurrentUser()
-    {
-        if(_user == null)
-            _user = Model.instance(mContext).AssignCurrentUser();
-        return _user;
-    }
-
-    private void SaveCurrentUser(User user)
+/*    private void SaveCurrentUser(User user)
     {
         ParseObject UserObj = new ParseObject(USERRECIPEBOOK);
         UserObj.put(USER_ID, user.getId());
@@ -410,8 +181,8 @@ public class Model
             WriteParseExceptionToLog(e);
         }
     }
-
-    private void SaveUserFavorites(User user, ParseRelation<ParseObject> favoritesRelation)
+*/
+/*    private void SaveUserFavorites(User user, ParseRelation<ParseObject> favoritesRelation)
     {
         for (Recipe recipe : user.getFavoritRecipes()) {
             ParseQuery query = new ParseQuery("Recipe");
@@ -428,21 +199,16 @@ public class Model
             }
         }
     }
-
-    public void AddRecipeToFavorites(Recipe recipe)
-    {
-      //  AddOrRemoveRecipeToFavorites(recipe,true);
-    }
-
-    public ArrayList<Recipe> GetUserFavoriteRecipesByLikeExp(String userId, String expression)
+*/
+    /*public ArrayList<Recipe> GetUserFavoriteRecipesByLikeExp(String userId, String expression)
     {
 
         ArrayList<Recipe> favorites = GetUserFavoriteRecipesById(userId);
         // if expression is empty, return all recipes
         return GetSubListByExpression(expression, favorites);
-    }
+    }*/
 
-    public ArrayList<Recipe> GetSubListByExpression( String expression, ArrayList<Recipe> list)
+ /*   public ArrayList<Recipe> GetSubListByExpression( String expression, ArrayList<Recipe> list)
     {
         if(expression.compareTo("") == 0)
         {
@@ -466,7 +232,7 @@ public class Model
 
         return output;
     }
-
+*/
     public interface OnModelCompletedOperationListener
     {
         void onAddRecipeComplete(boolean success);

@@ -113,6 +113,17 @@ public class NewModel
         return Results;
     }
 
+    public ArrayList<Recipe> GetAllUsersRecipesByLikeExp(String likeExpression, boolean findThisUserRecipes, String currentUserID)
+    {
+        if(!findThisUserRecipes) {
+            return GetSubListByExpression(likeExpression, GetAllUsersRecipes());
+        }
+        else
+        {
+            return GetSubListByExpression(likeExpression, GetAllUserRecipesByID(currentUserID));
+        }
+    }
+
     public ArrayList<Recipe> GetRecommandedRecipes(Context mContext)
     {
         User user = new User(mContext);
@@ -146,10 +157,10 @@ public class NewModel
         return userToReturn;
     }
 
-    public ArrayList<Recipe> GetUserFavoriteRecipes(Context mContext)
+    public ArrayList<Recipe> GetUserFavoriteRecipes(String UserID)
     {
-        User user = new User(mContext);
-        JSONObject jsonUser = ConvertUserToJSON(user);
+        //User user = new User(mContext);
+        JSONObject jsonUser = ConvertUserIDToJSON(UserID);
         ServerRequest serverRequest = new ServerRequest();
         JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getUserFavoriteRecipes", jsonUser);
 
@@ -190,6 +201,13 @@ public class NewModel
         }
     }
 
+    public ArrayList<Recipe> GetUserFavoriteRecipesByLikeExp(String userId, String expression)
+    {
+
+        ArrayList<Recipe> favorites = GetUserFavoriteRecipes(userId);
+        // if expression is empty, return all recipes
+        return GetSubListByExpression(expression, favorites);
+    }
 
 
     //endregion
@@ -385,6 +403,48 @@ public class NewModel
 
         return userJson;
     }
+
+    private JSONObject ConvertUserIDToJSON(String userID)
+    {
+        JSONObject userJson = new JSONObject();
+
+        try {
+            userJson.put("userID", userID);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return userJson;
+    }
+
+
+    private ArrayList<Recipe> GetSubListByExpression( String expression, ArrayList<Recipe> list)
+    {
+        if(expression.compareTo("") == 0)
+        {
+            return list;
+        }
+
+        expression = expression.toLowerCase();
+        ArrayList<Recipe> output = new ArrayList<>();
+
+        for (Recipe recipe : list)
+        {
+            if(recipe.getName().toLowerCase().contains(expression))
+            {
+                output.add(recipe);
+            }
+            else if(recipe.getDescription().toLowerCase().contains(expression))
+            {
+                output.add(recipe);
+            }
+        }
+
+        return output;
+    }
+
 
     //endregion
 
