@@ -233,7 +233,8 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     private void DeleteRecipe(Recipe recipe, int position)
     {
         User.getUserRecipes().remove(position);
-        Model.instance(this).DeleteRecipe(recipe);
+        //Model.instance(this).DeleteRecipe(recipe);
+        NewModel.instance().DeleteRecipe(recipe);
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
         imageAdapter.notifyDataSetChanged();
     }
@@ -318,13 +319,14 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         }
         if(action == USER_ACTION.EDIT)
         {
-            Model.instance(this).EditRecipe(recipe);
+            NewModel.instance().EditRecipe(recipe);
         }
 
         if(action == USER_ACTION.DELETE)
         {
             User.getUserRecipes().remove(recipe);
-            Model.instance(this).DeleteRecipe(recipe); // we need to put newmodel here to delete from db
+           // Model.instance(this).DeleteRecipe(recipe); // we need to put newmodel here to delete from db
+            NewModel.instance().DeleteRecipe(recipe);
         }
 
         if(action == USER_ACTION.CANCEL)

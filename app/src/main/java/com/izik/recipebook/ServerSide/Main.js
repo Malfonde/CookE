@@ -38,15 +38,15 @@ module.exports = {
 	deleteRecipe: function(recipeIDToDelete, callback) {
     		console.log('main - recipeToDelete');
     		console.log(recipeIDToDelete);
-    		Dal.editRecipe(recipeIDToDelete, function (err, recipe)
+    		Dal.deleteRecipe(recipeIDToDelete, function (err, recipeID)
     		{
     			if (err) {
     				console.log('delete recipe error: ' + err);
-    				callback(err, recipe);
+    				callback(err, recipeID);
     			}
     			else {
     				console.log('delete recipe success');
-    				callback(null, recipe);
+    				callback(null, recipeID);
     			}
     		});
     	},

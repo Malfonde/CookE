@@ -54,9 +54,7 @@ public class FavoritesFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         imageAdapter = new ImageAdapter(getActivity().getResources(), getContext());
         input_browseFavortieRecipes = (EditText) view.findViewById(R.id.input_browseRecipes);
-
         favorites = imageAdapter.setFavoriteRecipesByUserId(userId);
-
         gridview = (GridView) view.findViewById(R.id.AllBrowsedRecipesGridView);
         gridview.setAdapter(imageAdapter);
 

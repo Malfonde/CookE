@@ -36,19 +36,34 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/saveRecipe", jsonRecipe);
 
-        Recipe result = ConvertJSONToRecipe(json);
-        return result;
+        try
+        {
+            JSONObject recipeToConvert = json.getJSONObject("recipe");
+            Recipe result = ConvertJSONToRecipe(recipeToConvert);
+            return result;
+
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void EditRecipe(Recipe recipe)
     {
-        //please edit the recipe only with the userID ! not objectID !
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
-
         JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/editRecipe", jsonRecipe);
+    }
+
+    public void DeleteRecipe(Recipe recipe)
+    {
+        JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/deleteRecipe", jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
@@ -152,8 +167,6 @@ public class NewModel
      return Results;
     }
 
-
-
     public void AddOrRemoveToFavorites(Recipe recipe, Context mContext,boolean isAddOperation)
     {
         JSONObject jsonRecipe = ConvertFavoriteRecipeToJSON(recipe);
@@ -161,7 +174,7 @@ public class NewModel
         User user = new User(mContext);
 
         try {
-            jsonRecipe.put("requestedUserID",user.getId());
+            jsonRecipe.put("requestedUserID", user.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,6 +189,12 @@ public class NewModel
             JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/removeRecipeFromUserFavorites",jsonRecipe);
         }
     }
+
+
+
+    //endregion
+
+    //region Private
 
     private User ConvertJSONToUser(JSONObject json, Context mContext)
     {
@@ -207,10 +226,6 @@ public class NewModel
 
         return result;
     }
-
-    //endregion
-
-    //region Private
 
     private Recipe ConvertJSONToFavoriteRecipe(JSONObject jsonRecipe)
     {
@@ -289,8 +304,6 @@ public class NewModel
             ret.setUserId(jsonRecipe.get("UserID").toString());
             ret.setImage(jsonRecipe.get("ImagePath").toString());
             ret.setObjectID(jsonRecipe.get("_id").toString());
-
-
 
             ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
             JSONArray jar = new JSONArray(jsonRecipe.get("Ingredients").toString());

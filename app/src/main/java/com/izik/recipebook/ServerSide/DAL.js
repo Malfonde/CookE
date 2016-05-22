@@ -75,25 +75,25 @@ module.exports = {
         });
     },
 
-/*    deleteRecipe: function (recipeID, callback) {
+    deleteRecipe: function (recipeID, callback) {
     var collection = connection.collection("Recipes")
-
-     var result = collection.remove(
-            {_id: recipeID},
+    var o_id = ObjectID(recipeID);
+    var result = collection.remove(
+            {_id: o_id},
             {
                 justOne: true
             }
-            }, function (err, data) {
+            , function (err, data) {
                 if (err) {
                         console.log('delete recipe error: ' + err);
-                        callback(err, data);
+                        callback(err, recipeID);
                     }
                     else {
                         console.log('delete recipe success');
-                        callback(null, data.ops[0]);
+                        callback(null, recipeID);
                     }
             });
-    },*/
+    },
 	
 	addNewUser: function (newUser, callback){
 		var collection = connection.collection("Users");

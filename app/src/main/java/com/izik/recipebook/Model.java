@@ -288,49 +288,6 @@ public class Model
         return ingredients;
     }
 
-    public void EditRecipe(Recipe recipe)
-    {
-        NewModel newModel = NewModel.instance();
-        newModel.EditRecipe(recipe);
-/*
-        ParseQuery query = new ParseQuery("Recipe");
-        query.whereEqualTo(OBJECT_ID,recipe.getObjectID());
-
-        try
-        {
-            ParseObject obj = query.getFirst();
-
-            if(obj != null) {
-
-                obj.put(NAME, recipe.getName());
-                obj.put(DESC, recipe.getDescription());
-                obj.put(IMAGE, recipe.getImage());
-                obj.put(COOKING_INSTR, recipe.getCookingInstructions());
-                obj.put(SERVING_INSTR, recipe.getServingInstructions());
-
-                ParseRelation<ParseObject> relation = obj.getRelation(INGREDIENTS);
-
-                //removing previous ingredients list
-                DeleteIngredientsInIngredientsRelation(relation);
-
-                //saving the new ingredients list
-                SaveIngridientsListOfRecipe(recipe, relation);
-
-                obj.saveInBackground();
-                mListener.onEditRecipeComplete(true);
-            }
-            else
-            {
-                Log.e("RecipeBook","The recipe with object id : " +
-                        recipe.getObjectID() + " was not found in cloud db");
-            }
-        }
-        catch (ParseException e)
-        {
-            WriteParseExceptionToLog(e);
-        }*/
-    }
-
     private void DeleteIngredientsInIngredientsRelation(ParseRelation<ParseObject> relation)
     {
         //get all ingredients of a recipe and delte them

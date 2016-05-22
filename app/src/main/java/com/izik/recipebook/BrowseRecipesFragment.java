@@ -78,7 +78,7 @@ public class BrowseRecipesFragment extends Fragment
                 ShowRecipeDetails(allRecipes.get(position));
             }
         });
-        registerForContextMenu(gridview);
+      //  registerForContextMenu(gridview);
 
         input_browseRecipes.addTextChangedListener(new TextWatcher() {
             @Override
