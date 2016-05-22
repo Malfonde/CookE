@@ -112,6 +112,7 @@ public class FavoritesFragment extends Fragment
         final Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("IngredientsListObject", recipe.getIngrediants());
         bundle.putParcelable("RecipeObject", recipe);
+        bundle.putBoolean("withEditPermission", false);
         fragment.setArguments(bundle);
 
         ShowFragment(fragment);

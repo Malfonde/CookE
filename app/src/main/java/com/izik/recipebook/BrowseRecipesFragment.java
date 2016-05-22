@@ -75,7 +75,7 @@ public class BrowseRecipesFragment extends Fragment
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShowRecipeDetails(allRecipes.get(position));
+                ShowRecipeDetails(allRecipes.get(position), false);
             }
         });
       //  registerForContextMenu(gridview);
@@ -121,12 +121,13 @@ public class BrowseRecipesFragment extends Fragment
     }
 
 
-    private void ShowRecipeDetails(Recipe recipe)
+    private void ShowRecipeDetails(Recipe recipe, boolean withEditPermission)
     {
         fragment = new RecipeViewDetailsFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("IngredientsListObject", recipe.getIngrediants());
         bundle.putParcelable("RecipeObject", recipe);
+        bundle.putBoolean("withEditPermission", withEditPermission);
         fragment.setArguments(bundle);
 
         ShowFragment(fragment);

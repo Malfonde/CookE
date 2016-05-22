@@ -27,6 +27,7 @@ public class RecipeViewDetailsFragment extends Fragment {
     private ViewPager pager;
     private RecipeDetailsTabsPagerAdapter recipeDetailsTabsAdapter;
     private PagerTabStrip pager_header;
+    private boolean withEditPermission;
 
     public RecipeViewDetailsFragment() {
         // Required empty public constructor
@@ -38,6 +39,7 @@ public class RecipeViewDetailsFragment extends Fragment {
 
         Recipe recipe = getArguments().getParcelable("RecipeObject");
         this.recipe = recipe;
+        this.withEditPermission = getArguments().getBoolean("withEditPermission");
         setHasOptionsMenu(true);
         getActivity().setTitle(recipe.getName());
     }
@@ -47,7 +49,8 @@ public class RecipeViewDetailsFragment extends Fragment {
     {
         menu.findItem(R.id.confirm_button).setVisible(false);
         menu.findItem(R.id.add_recipe_menu_button).setVisible(true);
-        menu.findItem(R.id.edit_recipe_menu_button).setVisible(true);
+        menu.findItem(R.id.edit_recipe_menu_button).setVisible(withEditPermission);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 

@@ -177,6 +177,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         final Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("IngredientsListObject", recipe.getIngrediants());
         bundle.putParcelable("RecipeObject", recipe);
+        bundle.putBoolean("withEditPermission", true);
         fragment.setArguments(bundle);
 
         ShowFragment(fragment);
