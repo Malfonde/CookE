@@ -38,7 +38,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/saveRecipe",jsonRecipe);
     }
 
     public void EditRecipe(Recipe recipe)
@@ -46,7 +46,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/saveRecipe",jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
@@ -60,7 +60,7 @@ public class NewModel
         }
 
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.95.1:8080/GetAllUserRecipes",jsonId);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/GetAllUserRecipes",jsonId);
 
         //String Object_id,String User_id, String name, String description,ArrayList<Ingredient> ingrediants ,
         //String image, String cookingInstructions, String servingInstructions
