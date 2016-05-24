@@ -46,7 +46,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/saveRecipe",jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/editRecipe",jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
