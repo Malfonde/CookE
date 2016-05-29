@@ -36,7 +36,7 @@ public class NewModel
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
 
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/saveRecipe", jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/saveRecipe", jsonRecipe);
 
         try
         {
@@ -56,14 +56,14 @@ public class NewModel
     {
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/editRecipe", jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/editRecipe", jsonRecipe);
     }
 
     public void DeleteRecipe(Recipe recipe)
     {
         JSONObject jsonRecipe = ConvertRecipeToJSON(recipe);
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/deleteRecipe", jsonRecipe);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/deleteRecipe", jsonRecipe);
     }
 
     public ArrayList<Recipe> GetAllUserRecipesByID(String id)
@@ -77,7 +77,7 @@ public class NewModel
         }
 
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/GetAllUserRecipes",jsonId);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/GetAllUserRecipes",jsonId);
 
         //String Object_id,String User_id, String name, String description,ArrayList<Ingredient> ingrediants ,
         //String image, String cookingInstructions, String servingInstructions
@@ -98,7 +98,7 @@ public class NewModel
     public ArrayList<Recipe> GetAllUsersRecipes()
     {
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getAllUsersRecipes", new JSONObject());
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getAllUsersRecipes", new JSONObject());
         ArrayList<Recipe> Results = new ArrayList();
         try {
             JSONArray jar = json.getJSONArray("Recipes");
@@ -130,7 +130,7 @@ public class NewModel
         JSONObject jsonUser = ConvertUserToJSON(user);
 
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getRecommandedRecipesByUser",jsonUser);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getRecommandedRecipesByUser",jsonUser);
         ArrayList<Recipe> Results = new ArrayList();
         try {
             JSONArray jar = json.getJSONArray("Recipes");
@@ -150,7 +150,7 @@ public class NewModel
         User user = new User(mContext);
         JSONObject jsonUser = ConvertUserToJSON(user);
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addUser", jsonUser);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/addUser", jsonUser);
 
         User userToReturn = ConvertJSONToUser(json, mContext);
 
@@ -162,7 +162,7 @@ public class NewModel
         //User user = new User(mContext);
         JSONObject jsonUser = ConvertUserIDToJSON(UserID);
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/getUserFavoriteRecipes", jsonUser);
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getUserFavoriteRecipes", jsonUser);
 
         ArrayList<Recipe> Results = new ArrayList();
         try {
@@ -193,11 +193,11 @@ public class NewModel
 
         if(isAddOperation)
         {
-            JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/addRecipeToUserFavorites",jsonRecipe);
+            JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/addRecipeToUserFavorites",jsonRecipe);
         }
         else
         {
-            JSONObject json = serverRequest.getJSON("http://192.168.1.101:8080/removeRecipeFromUserFavorites",jsonRecipe);
+            JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/removeRecipeFromUserFavorites",jsonRecipe);
         }
     }
 
