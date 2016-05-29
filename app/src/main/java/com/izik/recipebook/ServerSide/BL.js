@@ -1,4 +1,4 @@
-﻿var main = require('./Main')
+﻿﻿var main = require('./Main')
   , Apriori = require('apriori')
   , Underscore = require('underscore');
 
