@@ -68,10 +68,18 @@
         android:visible="true"
         />
     <item
-        android:id="@+id/browseForRecipes"
+        android:id="@+id/suggestRecipes"
         android:icon="@drawable/search2"
         android:showAsAction="always"
-        android:title="broese"
+        android:title="suggested recipes"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/browseAllOthersRecipes"
+        android:icon="@drawable/magnifing_glass"
+        android:showAsAction="always"
+        android:title="browse others recipes"
         android:visible="true"
         />
 

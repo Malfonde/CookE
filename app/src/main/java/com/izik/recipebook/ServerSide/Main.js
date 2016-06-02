@@ -83,6 +83,23 @@ module.exports = {
         });
 	},
 
+	getAllRecipesWhoDoesntBelongToThisUser: function(userID,callback)
+	{
+		console.log('main - getAllRecipesWhoDoesntBelongToThisUser');
+		console.log(userID);
+		Dal.getAllRecipesWhoDoesntBelongToThisUser(userID, function(err,results)
+		{
+			if(err)
+			{
+				callback(err,results);
+			}
+			else
+			{
+				callback(null,results);
+			}
+		});
+	},
+
 	addRecipeToUserFavorites: function(favRecipe, userID, callback){
 		console.log('main - addRecipeToUserFavorits');
         console.log(favRecipe);

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
@@ -16,6 +17,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.izik.recipebook.DAL.NewModel;
+import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
 import com.parse.Parse;
 
 import java.util.ArrayList;
@@ -53,8 +55,12 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        //clear the backstack to avoid errors and correct back button functionality
+        ClearBackStack();
+
         switch (item.getItemId())
         {
+
             case R.id.add_recipe_menu_button:
             {
                addRecipe();
@@ -70,9 +76,9 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
                 ReturnToMainPage();
                 break;
             }
-            case R.id.browseForRecipes:
+            case R.id.suggestRecipes:
             {
-                BrowseRecipes();
+                SuggestRecipes();
                 break;
             }
             case R.id.Favorites_menu_button:
@@ -80,16 +86,30 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
                 ShowFavorites();
                 break;
             }
+            case R.id.browseAllOthersRecipes:
+            {
+                BrowseOthersRecipes();
+                break;
+            }
             default:
-                return super.onOptionsItemSelected(item);
+                ReturnToMainPage();
+                break;
+                //return super.onOptionsItemSelected(item);
         }
 
+        // if we viewd a recipeDetails fragment, we need to change the picture's opacity back
         if(viewedRecipe != null)
         {
             SetViewdRecipeOpacityBack();
+
         }
 
         return true;
+    }
+
+    private void ClearBackStack() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
@@ -267,7 +287,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FragmentsFrameLayer, fragment).commit();
+                .replace(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();
 
         findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.VISIBLE);
@@ -300,11 +320,23 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         ShowFragment(fragment);
     }
 
-    private void BrowseRecipes()
+    private void BrowseOthersRecipes()
     {
         BrowseRecipesFragment fragment = new BrowseRecipesFragment();
         final Bundle bundle = new Bundle();
         bundle.putString("User_ID", User.getId());
+        bundle.putString("BrowseRecipesSpecify", BROWSE_RECIPE_SPESIFY.ALL_BUT_GIVEN_USER.toString());
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
+    }
+
+
+    private void SuggestRecipes()
+    {
+        BrowseRecipesFragment fragment = new BrowseRecipesFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString("User_ID", User.getId());
+        bundle.putString("BrowseRecipesSpecify", BROWSE_RECIPE_SPESIFY.SUGGESTED_RECIPES.toString());
         fragment.setArguments(bundle);
         ShowFragment(fragment);
     }

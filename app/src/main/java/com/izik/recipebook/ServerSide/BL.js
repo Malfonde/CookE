@@ -139,6 +139,27 @@ exports.deleteRecipe = function (req, res)
     });
  };
 
+  exports.getAllRecipesWhoDoesntBelongToThisUser = function(req,res)
+  {
+     console.log("main.getAllRecipesWhoDoesntBelongToThisUser part*****************");
+     var temp = req.body.recipe; // Getting the parameters
+     var jsonId = JSON.parse(temp);
+
+     main.getAllRecipesWhoDoesntBelongToThisUser(jsonId.userID, function(err, results)
+     {
+        if (err)
+        {
+          console.log("Faild to get all the recipes but the given user's ones:  " + err);
+          res.send(JSON.stringify({ status: "Fail" }));
+        }
+        else
+        {
+          console.log("got all the recipes but the given user's ones");
+          res.send(JSON.stringify({ Recipes: results }));
+        }
+     });
+  };
+
  exports.addRecipeToUserFavorites = function (req,res)
  {
     console.log("main.addRecipeToUserFavorites part*****************");

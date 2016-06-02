@@ -122,7 +122,7 @@ public class FavoritesFragment extends Fragment
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).commit();
+                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInFavoritesFragment").commit();
 
         getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.INVISIBLE);
         getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.VISIBLE);

@@ -146,6 +146,20 @@ module.exports = {
         });		
 	},
 
+	getAllRecipesWhoDoesntBelongToThisUser: function(userId,callback){
+	    var results;
+        connection.collection("Recipes").find({UserID:{$ne: userId}}).toArray(function (err, recipes) {
+                if (err) {
+                    console.log('err:' + err);
+                    callback(err, recipes);
+                }
+                else {
+                    results = recipes;
+                    callback(null, results);
+                }
+            });
+	},
+
 	getAllUserFavoriteRecipes: function(userID, callback){
     		var results;
     		var o_id = ObjectID(userID);

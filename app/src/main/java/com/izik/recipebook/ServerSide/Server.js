@@ -37,6 +37,11 @@ app.post('/GetAllUserRecipes',function(req,res)
     bl.getUserRecipes(req ,res);
 });
 
+app.post('/getAllRecipesWhoDoesntBelongToThisUser', function(req,res)
+{
+    bl.getAllRecipesWhoDoesntBelongToThisUser(req,res);
+});
+
 app.post('/getAllUsersRecipes',function(req,res)
 {
     bl.getAllUsersRecipes(req ,res);

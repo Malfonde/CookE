@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import com.izik.recipebook.DAL.NewModel;
+import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class BrowseRecipesFragment extends Fragment
     private EditText input_browseRecipes;
     ProgressDialog AddOrRemoveFavoritesDialog;
     private String UserID;
+    private BROWSE_RECIPE_SPESIFY BrowseSpesification;
 
     public BrowseRecipesFragment()
     {
@@ -49,6 +51,8 @@ public class BrowseRecipesFragment extends Fragment
         AddOrRemoveFavoritesDialog = new ProgressDialog(getContext());
         AddOrRemoveFavoritesDialog.setCancelable(true);
         UserID = getArguments().getString("User_ID");
+        BrowseSpesification =  BROWSE_RECIPE_SPESIFY.valueOf(getArguments().getString("BrowseRecipesSpecify"));
+
     }
 
     @Override
@@ -66,8 +70,19 @@ public class BrowseRecipesFragment extends Fragment
         imageAdapter = new ImageAdapter(getActivity().getResources(), getContext());
         input_browseRecipes = (EditText) view.findViewById(R.id.input_browseRecipes);
 
-        //allRecipes = imageAdapter.setRecipesFromAllUsers();
-        allRecipes = imageAdapter.setRecommandedRecipes();
+        //setting the recipes to show
+        switch (BrowseSpesification)
+        {
+            case SUGGESTED_RECIPES:
+                allRecipes = imageAdapter.setRecommandedRecipes();
+                break;
+            case ALL_BUT_GIVEN_USER:
+                allRecipes = imageAdapter.setAllRecipesWhoDoesntBelongToThisUser(UserID);
+                break;
+            default:
+                allRecipes = imageAdapter.setRecipesFromAllUsers();
+                break;
+        }
 
         gridview = (GridView) view.findViewById(R.id.AllBrowsedRecipesGridView);
         gridview.setAdapter(imageAdapter);
@@ -138,7 +153,7 @@ public class BrowseRecipesFragment extends Fragment
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).commit();
+                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInBrowseFragment").commit();
 
         getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.INVISIBLE);
         getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.VISIBLE);

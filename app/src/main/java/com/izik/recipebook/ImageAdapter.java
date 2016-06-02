@@ -91,10 +91,16 @@ public class ImageAdapter extends BaseAdapter
 
     public  ArrayList<Recipe> setRecipesFromAllUsers()
     {
-        //ArrayList<Recipe> allRecipes = Model.instance(mContext).GetAllUsersRecipes();
         ArrayList<Recipe> allRecipes = NewModel.instance().GetAllUsersRecipes();
         mThumbIds = GetAllImagesFromArrayList(allRecipes);
         return  allRecipes;
+    }
+
+    public  ArrayList<Recipe>  setAllRecipesWhoDoesntBelongToThisUser(String id)
+    {
+        ArrayList<Recipe> userRecipes = NewModel.instance().GetAllUsersRecipesWhoDoesNotBelongToThisUser(id);
+        mThumbIds = GetAllImagesFromArrayList(userRecipes);
+        return userRecipes;
     }
 
     public  ArrayList<Recipe> setRecommandedRecipes()
@@ -108,7 +114,7 @@ public class ImageAdapter extends BaseAdapter
     public ArrayList<Recipe> setRecipesBy(String likeExpression, boolean findThisUserRecipes,String currentUserID) {
 
         //ArrayList<Recipe> likeExpressionRecipes = Model.instance(mContext).GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes);
-        ArrayList<Recipe> likeExpressionRecipes = NewModel.instance().GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes,currentUserID);
+        ArrayList<Recipe> likeExpressionRecipes = NewModel.instance().GetAllUsersRecipesByLikeExp(likeExpression, findThisUserRecipes, currentUserID);
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }
@@ -153,4 +159,6 @@ public class ImageAdapter extends BaseAdapter
         mThumbIds = GetAllImagesFromArrayList(likeExpressionRecipes);
         return likeExpressionRecipes;
     }
+
+
 }

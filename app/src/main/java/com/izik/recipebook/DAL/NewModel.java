@@ -113,6 +113,24 @@ public class NewModel
         return Results;
     }
 
+    public ArrayList<Recipe> GetAllUsersRecipesWhoDoesNotBelongToThisUser(String id)
+    {
+        ServerRequest serverRequest = new ServerRequest();
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getAllRecipesWhoDoesntBelongToThisUser", new JSONObject());
+        ArrayList<Recipe> Results = new ArrayList();
+        try {
+            JSONArray jar = json.getJSONArray("Recipes");
+            for (int i = 0; i < jar.length(); i++) {
+                Results.add(ConvertJSONToRecipe(jar.getJSONObject(i))); //Getting current json object and converting to recipe
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return Results;
+    }
+
     public ArrayList<Recipe> GetAllUsersRecipesByLikeExp(String likeExpression, boolean findThisUserRecipes, String currentUserID)
     {
         if(!findThisUserRecipes) {
@@ -444,6 +462,8 @@ public class NewModel
 
         return output;
     }
+
+
 
 
     //endregion
