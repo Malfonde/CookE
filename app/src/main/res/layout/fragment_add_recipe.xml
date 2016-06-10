@@ -17,59 +17,63 @@
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
-        android:background="@drawable/bake_bg"
         android:id="@+id/bowl_spoon_bg_container">
+        <!--android:background="@drawable/bake_bg"-->
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            >
-
-            <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:id="@+id/PickRecipePicture"
-                android:scaleType="fitXY"
-                android:background="@drawable/defauld_recipe_pic"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp"
+            android:paddingTop="20dp"
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="name: "
+                android:text="Recipe name: "
                 android:textSize="25dp"
                 />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/input_name"
                 android:text=""
                 android:textSize="20dp"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            >
+
+            <ImageButton
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:id="@+id/PickRecipePicture"
+                android:scaleType="fitXY"
+                android:background="@drawable/add_image"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="description: "
+                android:text="Description: "
                 android:textSize="25dp"/>
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/input_description"
                 android:text=""
@@ -83,7 +87,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingrediants: "
+                android:text="Ingredients: "
                 android:textSize="25dp"/>
         </LinearLayout>
 
@@ -111,7 +115,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="How to cook? :"
+                        android:text="Cooking instructions :"
                         android:textSize="25dp"/>
 
                     <EditText

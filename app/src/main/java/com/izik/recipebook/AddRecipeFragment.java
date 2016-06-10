@@ -115,19 +115,19 @@ public class AddRecipeFragment extends Fragment
                     .replace(R.id.ingredientsFragmentFrameLayer, ingredientsFragment).commit();
         }
 
-        setBackgroundImagesOpacity(view);
+        //setBackgroundImagesOpacity(view);
     }
 
-    private void setBackgroundImagesOpacity(View view)
-    {
-        Drawable bowl_spoon_bg = getResources().getDrawable(R.drawable.bake_bg);
-
-        // setting the opacity (alpha)
-        bowl_spoon_bg.setAlpha(40);
-
-        // setting the images on the ImageViews
-        view.findViewById(R.id.bowl_spoon_bg_container).setBackground(bowl_spoon_bg);
-    }
+//    private void setBackgroundImagesOpacity(View view)
+//    {
+//        Drawable bowl_spoon_bg = getResources().getDrawable(R.drawable.bake_bg);
+//
+//        // setting the opacity (alpha)
+//        bowl_spoon_bg.setAlpha(40);
+//
+//        // setting the images on the ImageViews
+//        view.findViewById(R.id.bowl_spoon_bg_container).setBackground(bowl_spoon_bg);
+//    }
 
     private void ChoseImage()
     {
@@ -163,9 +163,9 @@ public class AddRecipeFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        menu.findItem(R.id.confirm_button).setVisible(true);
-        menu.findItem(R.id.add_recipe_menu_button).setVisible(false);
-        menu.findItem(R.id.delete_recipe_menu_button).setVisible(true);
+//        menu.findItem(R.id.confirm_button).setVisible(true);
+//        //menu.findItem(R.id.add_recipe_menu_button).setVisible(false);
+//        menu.findItem(R.id.delete_recipe_menu_button).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

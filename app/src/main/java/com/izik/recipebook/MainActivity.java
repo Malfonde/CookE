@@ -1,10 +1,17 @@
 package com.izik.recipebook;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+//import android.support.v4.app.FragmentActivity;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
@@ -15,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
+import android.support.v4.widget.DrawerLayout;
 
 import com.izik.recipebook.DAL.NewModel;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
@@ -23,7 +31,7 @@ import com.parse.Parse;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class MainActivity extends FragmentActivity implements AddRecipeFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements AddRecipeFragment.OnFragmentInteractionListener,
         IngredientsFragment.OnFragmentInteractionListener, RecipeViewDetailsFragment.OnFragmentInteractionListener, RecipeDescriptionTabFragment.OnFragmentInteractionListener,
         RecipeIngredientsTabFragment.OnFragmentInteractionListener, RecipeCookingInstructionsTabFragment.OnFragmentInteractionListener,
         RecipeServingInstructionsTabFragment.OnFragmentInteractionListener, BrowseRecipesFragment.OnFragmentInteractionListener, Model.OnModelCompletedOperationListener
@@ -38,6 +46,10 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     private ProgressDialog AddOrRemoveFavoritesDialog;
     private Recipe viewedRecipe;
     private EditText input_searchMyRecipes;
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
 
     public void setViewedRecipe(Recipe viewedRecipe) {
         this.viewedRecipe = viewedRecipe;
@@ -60,28 +72,30 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
         switch (item.getItemId())
         {
-
-            case R.id.add_recipe_menu_button:
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+            /*case R.id.add_recipe_menu_button:
             {
                addRecipe();
                 break;
-            }
+            }*/
             case R.id.edit_recipe_menu_button:
             {
                 EditRecipe(this.viewedRecipe);
                 break;
             }
-            case R.id.homeRecipeBook:
+            /*case R.id.homeRecipeBook:
             {
                 ReturnToMainPage();
                 break;
-            }
+            }*/
             case R.id.suggestRecipes:
             {
                 SuggestRecipes();
                 break;
             }
-            case R.id.Favorites_menu_button:
+            /*case R.id.Favorites_menu_button:
             {
                 ShowFavorites();
                 break;
@@ -90,7 +104,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
             {
                 BrowseOthersRecipes();
                 break;
-            }
+            }*/
             default:
                 ReturnToMainPage();
                 break;
@@ -104,7 +118,18 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
         }
 
-        return true;
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
     }
 
     private void ClearBackStack() {
@@ -117,6 +142,27 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Drawer settings
+        // Set a Toolbar to replace the ActionBar.
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
+
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+//      mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+
+        // Tie DrawerLayout events to the ActionBarToggle
+        mDrawer.setDrawerListener(drawerToggle);
 
         //Parse settings
         Parse.enableLocalDatastore(this);
@@ -149,9 +195,9 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         });
         registerForContextMenu(gridview);
 
-        input_searchMyRecipes = (EditText) findViewById(R.id.input_searchMyRecipes);
+        //input_searchMyRecipes = (EditText) findViewById(R.id.input_searchMyRecipes);
 
-        input_searchMyRecipes.addTextChangedListener(new TextWatcher() {
+        /*input_searchMyRecipes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (s.toString().compareTo("") == 0) {
@@ -168,10 +214,75 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
             public void afterTextChanged(Editable s) {
                 SetGridView(s.toString());
             }
-        });
+        });*/
 
         setBackgroundImagesOpacity();
     }
+
+    // Drawer stuff
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        //Fragment fragment = null;
+        //Class fragmentClass;
+       switch(menuItem.getItemId()) {
+           case R.id.nav_my_recipes:
+               ReturnToMainPage();
+               break;
+            case R.id.nav_add_recipe:
+                addRecipe();
+                break;
+            case R.id.nav_browse:
+                BrowseOthersRecipes();
+                break;
+            case R.id.nav_favorites:
+                ShowFavorites();
+                break;
+            default:
+                ReturnToMainPage();
+                break;
+        }
+
+        /*try {
+            fragment = (Fragment)fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        // Insert the fragment by replacing any existing fragment
+       /* FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();*/
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+    // end drawer stuff
+
 
     private void SetGridView(String expression)
     {
@@ -188,7 +299,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         bowl_spoon_bg.setAlpha(40);
 
         // setting the images on the ImageViews
-        findViewById(R.id.searchMainContainer).setBackground(bowl_spoon_bg);
+        //findViewById(R.id.searchMainContainer).setBackground(bowl_spoon_bg);
     }
 
     private void ShowRecipeDetails(Recipe recipe)
@@ -201,7 +312,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
         fragment.setArguments(bundle);
 
         ShowFragment(fragment);
-        optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
+        //optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         optionsMenu.findItem(R.id.edit_recipe_menu_button).setVisible(true);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
     }
@@ -286,21 +397,24 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();
+        /*getSupportFragmentManager().beginTransaction()
+                .replace(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();*/
 
-        findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.FragmentsFrameLayer, fragment).commit();
+
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.VISIBLE);
     }
 
     private void ReturnToMainPage()
     {
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.INVISIBLE);
-        findViewById(R.id.searchMainContainer).setVisibility(View.VISIBLE);
+        //findViewById(R.id.searchMainContainer).setVisibility(View.VISIBLE);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
         optionsMenu.findItem(R.id.edit_recipe_menu_button).setVisible(false);
         optionsMenu.findItem(R.id.delete_recipe_menu_button).setVisible(false);
-        optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
+        //optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         SetTitleBack();
     }
 
@@ -369,7 +483,7 @@ public class MainActivity extends FragmentActivity implements AddRecipeFragment.
 
         imageAdapter.RefreshUserRecipesImagesList(User.getId());
         imageAdapter.notifyDataSetChanged();
-        optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
+        //optionsMenu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
         optionsMenu.findItem(R.id.edit_recipe_menu_button).setVisible(false);
         optionsMenu.findItem(R.id.delete_recipe_menu_button).setVisible(false);

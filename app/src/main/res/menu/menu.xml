@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
+    <!-- <item
         android:id="@+id/add_recipe_menu_button"
         android:icon="@drawable/add2"
         android:showAsAction="always"
-        android:title="add">
+        android:title="add"> -->
 
 
       <!--  <menu>
@@ -17,35 +17,35 @@
                 android:title="Sort by rating" />
         </menu>-->
 
-        </item>
+    <!-- </item> -->
 
-    <item
-        android:id="@+id/confirm_button"
-        android:icon="@drawable/check2"
-        android:showAsAction="always"
-        android:title="confirm">
-    </item>
-    <item
-        android:id="@+id/edit_recipe_menu_button"
-        android:icon="@drawable/pencil"
-        android:showAsAction="always"
-        android:title="edit"
-        android:visible="false"
-        />
-    <item
-        android:id="@+id/delete_recipe_menu_button"
-        android:icon="@drawable/delete_icon"
-        android:showAsAction="always"
-        android:title="delete"
-        android:visible="false"
-        />
-    <item
+<item
+    android:id="@+id/confirm_button"
+    android:icon="@drawable/check2"
+    android:showAsAction="always"
+    android:title="confirm">
+</item>
+<item
+    android:id="@+id/edit_recipe_menu_button"
+    android:icon="@drawable/pencil"
+    android:showAsAction="always"
+    android:title="edit"
+    android:visible="false"
+    />
+<item
+    android:id="@+id/delete_recipe_menu_button"
+    android:icon="@drawable/delete_icon"
+    android:showAsAction="always"
+    android:title="delete"
+    android:visible="false"
+    />
+    <!--<item
         android:id="@+id/Favorites_menu_button"
         android:icon="@drawable/recipe_book4"
         android:showAsAction="always"
         android:title="Favorties"
         android:visible="true"
-        />
+        />-->
     <item
         android:id="@+id/beforeRating_menu_button"
         android:icon="@drawable/greyed_star"
@@ -60,13 +60,13 @@
         android:title="rated"
         android:visible="false"
         />
-    <item
+    <!--<item
         android:id="@+id/homeRecipeBook"
         android:icon="@drawable/recipe_book5"
         android:showAsAction="always"
         android:title="home"
         android:visible="true"
-        />
+        /> -->
     <item
         android:id="@+id/suggestRecipes"
         android:icon="@drawable/search2"
@@ -75,15 +75,13 @@
         android:visible="true"
         />
 
-    <item
+    <!-- <item
         android:id="@+id/browseAllOthersRecipes"
         android:icon="@drawable/magnifing_glass"
         android:showAsAction="always"
         android:title="browse others recipes"
         android:visible="true"
         />
+    -->
 
-
-
-
-</menu>
+    </menu>

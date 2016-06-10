@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/menu_top">
+        <item
+            android:id="@+id/nav_my_recipes"
+            android:icon="@drawable/house"
+            android:title="My Recipes"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_browse"
+            android:icon="@drawable/globe"
+            android:title="Browse Recipes" />
+        <item
+            android:id="@+id/nav_add_recipe"
+            android:icon="@drawable/addimage"
+            android:title="Add a Recipe" />
+
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/favorites"
+            android:title="Favorites" />
+    </group>
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/menu_bottom">
+        <item
+            android:icon="@drawable/help"
+            android:title="Help" />
+        <item
+            android:icon="@drawable/about"
+            android:title="About" />
+    </group>
+</menu>

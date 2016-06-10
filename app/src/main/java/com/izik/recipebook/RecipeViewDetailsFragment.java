@@ -48,7 +48,7 @@ public class RecipeViewDetailsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         menu.findItem(R.id.confirm_button).setVisible(false);
-        menu.findItem(R.id.add_recipe_menu_button).setVisible(true);
+        //menu.findItem(R.id.add_recipe_menu_button).setVisible(true);
         menu.findItem(R.id.edit_recipe_menu_button).setVisible(withEditPermission);
 
         super.onCreateOptionsMenu(menu, inflater);
