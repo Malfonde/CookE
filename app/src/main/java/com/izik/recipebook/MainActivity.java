@@ -90,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
                 ReturnToMainPage();
                 break;
             }*/
-            case R.id.suggestRecipes:
-            {
-                SuggestRecipes();
-                break;
-            }
+//            case R.id.suggestRecipes:
+//            {
+//                SuggestRecipes();
+//                break;
+//            }
             /*case R.id.Favorites_menu_button:
             {
                 ShowFavorites();

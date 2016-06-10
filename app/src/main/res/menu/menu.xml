@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- <item
-        android:id="@+id/add_recipe_menu_button"
-        android:icon="@drawable/add2"
-        android:showAsAction="always"
-        android:title="add"> -->
 
 
       <!--  <menu>
@@ -19,23 +14,12 @@
 
     <!-- </item> -->
 
-<item
-    android:id="@+id/confirm_button"
-    android:icon="@drawable/check2"
-    android:showAsAction="always"
-    android:title="confirm">
-</item>
-<item
-    android:id="@+id/edit_recipe_menu_button"
-    android:icon="@drawable/pencil"
-    android:showAsAction="always"
-    android:title="edit"
-    android:visible="false"
-    />
+
+
 <item
     android:id="@+id/delete_recipe_menu_button"
-    android:icon="@drawable/delete_icon"
-    android:showAsAction="always"
+    android:icon="@drawable/trashcan"
+    app:showAsAction="always"
     android:title="delete"
     android:visible="false"
     />
@@ -49,14 +33,14 @@
     <item
         android:id="@+id/beforeRating_menu_button"
         android:icon="@drawable/greyed_star"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="notRatedYet"
         android:visible="false"
         />
     <item
         android:id="@+id/afterRating_menu_button"
         android:icon="@drawable/golden_star"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="rated"
         android:visible="false"
         />
@@ -67,21 +51,42 @@
         android:title="home"
         android:visible="true"
         /> -->
-    <item
+    <!--<item
         android:id="@+id/suggestRecipes"
         android:icon="@drawable/search2"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="suggested recipes"
         android:visible="true"
+        />-->
+
+    <item
+        android:id="@+id/confirm_button"
+        android:icon="@drawable/confirm"
+        app:showAsAction="always"
+        android:title="confirm"
+        android:visible="true">
+    </item>
+
+     <item
+         android:id="@+id/add_recipe_menu_button"
+         android:icon="@drawable/plus"
+         app:showAsAction="always"
+         android:title="add"/>
+
+    <item
+        android:id="@+id/edit_recipe_menu_button"
+        android:icon="@drawable/pencil"
+        app:showAsAction="always"
+        android:title="edit"
+        android:visible="false"
         />
 
-    <!-- <item
+    <!--<item
         android:id="@+id/browseAllOthersRecipes"
         android:icon="@drawable/magnifing_glass"
         android:showAsAction="always"
         android:title="browse others recipes"
         android:visible="true"
-        />
-    -->
+        /> -->
 
     </menu>

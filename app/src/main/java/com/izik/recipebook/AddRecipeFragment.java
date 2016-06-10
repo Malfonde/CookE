@@ -163,9 +163,9 @@ public class AddRecipeFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-//        menu.findItem(R.id.confirm_button).setVisible(true);
-//        //menu.findItem(R.id.add_recipe_menu_button).setVisible(false);
-//        menu.findItem(R.id.delete_recipe_menu_button).setVisible(true);
+        menu.findItem(R.id.confirm_button).setVisible(true);
+        menu.findItem(R.id.add_recipe_menu_button).setVisible(false);
+        menu.findItem(R.id.delete_recipe_menu_button).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
