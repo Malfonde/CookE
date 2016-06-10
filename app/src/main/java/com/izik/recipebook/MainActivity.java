@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             }*/
             default:
                 ReturnToMainPage();
-                break;
-                //return super.onOptionsItemSelected(item);
+                //break;
+                return super.onOptionsItemSelected(item);
         }
 
         // if we viewd a recipeDetails fragment, we need to change the picture's opacity back
