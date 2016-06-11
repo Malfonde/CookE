@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:textColor="#666666">
 
 
       <!--  <menu>
@@ -58,6 +59,12 @@
         android:title="suggested recipes"
         android:visible="true"
         />-->
+
+    <item android:id="@+id/search"
+        android:title="@string/app_name"
+        android:icon="@drawable/search"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
         android:id="@+id/confirm_button"
