@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 ;
 
-public class BrowseRecipesFragment extends Fragment
+public class BrowseRecipesFragment extends Fragment implements BackButton
 {
     private static final int UNIQUE_BROWSE_FRAGMENT_GROUP_ID = 2;
     private static final String TITLE = "Browsing";
@@ -153,7 +153,7 @@ public class BrowseRecipesFragment extends Fragment
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInBrowseFragment").commit();
+                .add(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInBrowseFragment").commit();
 
         getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.INVISIBLE);
         getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.VISIBLE);
@@ -213,7 +213,7 @@ public class BrowseRecipesFragment extends Fragment
         }
         else
         {
-            NewModel.instance().AddOrRemoveToFavorites(recipe,getContext(), true);
+            NewModel.instance().AddOrRemoveToFavorites(recipe, getContext(), true);
             //Model.instance(getContext()).AddRecipeToFavorites(recipe);
         }
     }
@@ -237,6 +237,14 @@ public class BrowseRecipesFragment extends Fragment
         {
             getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
+    }
+
+    public void onFragmentResume()
+    {
+        getActivity().setTitle(TITLE);
+        ((MainActivity)getActivity()).SetViewdRecipeOpacityBack();
+        getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {

@@ -16,7 +16,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-public class FavoritesFragment extends Fragment
+public class FavoritesFragment extends Fragment implements BackButton
 {
 
     private static final String TITLE = "Favorties";
@@ -138,4 +138,14 @@ public class FavoritesFragment extends Fragment
     }
 
 
+    @Override
+    public void onFragmentResume()
+    {
+
+        getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.INVISIBLE);
+        getActivity().setTitle(TITLE);
+        ((MainActivity)getActivity()).SetViewdRecipeOpacityBack();
+
+    }
 }

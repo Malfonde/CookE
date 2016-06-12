@@ -4,16 +4,14 @@ import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-//import android.support.v4.app.FragmentActivity;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,14 +20,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
-import android.support.v4.widget.DrawerLayout;
-
 import com.izik.recipebook.DAL.NewModel;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
-import com.parse.Parse;
 
 import java.util.ArrayList;
 import java.util.Properties;
+
+//import android.support.v4.app.FragmentActivity;
 
 public class MainActivity extends AppCompatActivity implements AddRecipeFragment.OnFragmentInteractionListener,
         IngredientsFragment.OnFragmentInteractionListener, RecipeViewDetailsFragment.OnFragmentInteractionListener, RecipeDescriptionTabFragment.OnFragmentInteractionListener,
@@ -164,10 +161,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.setDrawerListener(drawerToggle);
-
-        //Parse settings
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
 
         AddOrRemoveFavoritesDialog = new ProgressDialog(this);
         AddOrRemoveFavoritesDialog.setCancelable(true);
@@ -360,6 +353,47 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            //if showRecipeDetails
+            if(viewedRecipe != null)
+            {
+                //if we showed recipe from myRecipes
+                if(count == 1) {
+                    SetViewdRecipeOpacityBack();
+                    ReturnToMainPage();
+                }
+                //if we showed from Favorites Or Browse Or Suggest
+                else
+                {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.FragmentsFrameLayer);
+                    // checking which fragment is it
+                    try {
+                        if (fragment instanceof BackButton) {
+                            ((BackButton) fragment).onFragmentResume();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+
+
+                }
+            }
+
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+
+    }
+
     private void EditRecipe(Recipe recipe)
     {
         if (findViewById(R.id.FragmentsFrameLayer) != null)
@@ -408,13 +442,14 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         //findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FragmentsFrameLayer, fragment).commit();
+        fragmentManager.beginTransaction().add(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();
 
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.VISIBLE);
     }
 
     private void ReturnToMainPage()
     {
+        gridview.setVisibility(View.VISIBLE);
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.INVISIBLE);
         //findViewById(R.id.searchMainContainer).setVisibility(View.VISIBLE);
         optionsMenu.findItem(R.id.confirm_button).setVisible(false);
@@ -424,9 +459,8 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         SetTitleBack();
     }
 
-    private void SetViewdRecipeOpacityBack()
+    public void SetViewdRecipeOpacityBack()
     {
-        gridview.setVisibility(View.VISIBLE);
         int picId = getResources().getIdentifier(viewedRecipe.getImage(), "drawable", "com.izik.recipebook");
         Drawable recipePicture = getResources().getDrawable(picId);
         recipePicture.setAlpha(255);
