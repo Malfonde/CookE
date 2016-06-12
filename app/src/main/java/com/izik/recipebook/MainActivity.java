@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 {
 
     private static final int UNIQUE_MAIN_ACTIVITY_GROUP_ID = 1;
-    private static final String TITLE = "RecipeBook";
+    private static final String TITLE = "CookE";
     ImageAdapter imageAdapter;
     private Menu optionsMenu;
     private GridView gridview;
