@@ -165,10 +165,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.setDrawerListener(drawerToggle);
 
-        //Parse settings
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
-
         AddOrRemoveFavoritesDialog = new ProgressDialog(this);
         AddOrRemoveFavoritesDialog.setCancelable(true);
 
@@ -217,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             }
         });*/
 
-        setBackgroundImagesOpacity();
+        //setBackgroundImagesOpacity();
     }
 
     // Drawer stuff
@@ -296,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
     }
 
 
-    private void setBackgroundImagesOpacity()
+   /* private void setBackgroundImagesOpacity()
     {
         Drawable bowl_spoon_bg = getResources().getDrawable(R.drawable.bake_bg);
 
@@ -305,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         // setting the images on the ImageViews
         //findViewById(R.id.searchMainContainer).setBackground(bowl_spoon_bg);
-    }
+    }*/
 
     private void ShowRecipeDetails(Recipe recipe)
     {
