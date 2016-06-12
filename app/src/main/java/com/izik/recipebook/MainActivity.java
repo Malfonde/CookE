@@ -24,9 +24,35 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.support.v4.widget.DrawerLayout;
 
+//facebook
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.List;
+
 import com.izik.recipebook.DAL.NewModel;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
 import com.parse.Parse;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -50,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    //private CallbackManager callbackManager = null;
+   // private LoginButton loginButton;
 
     public void setViewedRecipe(Recipe viewedRecipe) {
         this.viewedRecipe = viewedRecipe;
@@ -63,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         optionsMenu = menu;
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -138,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         fm .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -165,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.setDrawerListener(drawerToggle);
 
-        //Parse settings
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
 
         AddOrRemoveFavoritesDialog = new ProgressDialog(this);
         AddOrRemoveFavoritesDialog.setCancelable(true);
@@ -237,6 +266,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         //Fragment fragment = null;
         //Class fragmentClass;
        switch(menuItem.getItemId()) {
+           case R.id.nav_login_button:
+               LoginFB();
+               break;
            case R.id.nav_my_recipes:
                ReturnToMainPage();
                break;
@@ -305,6 +337,15 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         // setting the images on the ImageViews
         //findViewById(R.id.searchMainContainer).setBackground(bowl_spoon_bg);
+    }
+
+    public void LoginFB()
+    {
+        //gridview.setVisibility(View.INVISIBLE);
+        final Bundle bundle = new Bundle();
+        Fragment fragment = new facebook_login();
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
     }
 
     private void ShowRecipeDetails(Recipe recipe)
