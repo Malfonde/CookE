@@ -1,8 +1,6 @@
 package com.izik.recipebook;
 
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -108,7 +106,7 @@ public class FavoritesFragment extends Fragment implements BackButton
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInFavoritesFragment").commit();
+                .add(R.id.BrowseRecipesFragmentsFrameLayer, fragment).addToBackStack("nestedFragmentInFavoritesFragment").commit();
 
         getView().findViewById(R.id.BrowseGridViewContainer).setVisibility(View.INVISIBLE);
         getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.VISIBLE);

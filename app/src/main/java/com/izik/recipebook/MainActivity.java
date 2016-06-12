@@ -26,7 +26,6 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.izik.recipebook.DAL.NewModel;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
-import com.parse.Parse;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -165,10 +164,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawer.setDrawerListener(drawerToggle);
 
-        //Parse settings
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
-
         AddOrRemoveFavoritesDialog = new ProgressDialog(this);
         AddOrRemoveFavoritesDialog.setCancelable(true);
 
@@ -195,27 +190,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             }
         });
         registerForContextMenu(gridview);
-
-        //input_searchMyRecipes = (EditText) findViewById(R.id.input_searchMyRecipes);
-
-        /*input_searchMyRecipes.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.toString().compareTo("") == 0) {
-                    SetGridView(s.toString());
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                SetGridView(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                SetGridView(s.toString());
-            }
-        });*/
 
         setBackgroundImagesOpacity();
     }
@@ -408,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         //findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.FragmentsFrameLayer, fragment).commit();
+        fragmentManager.beginTransaction().add(R.id.FragmentsFrameLayer, fragment).commit();
 
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.VISIBLE);
     }
@@ -424,13 +398,53 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         SetTitleBack();
     }
 
-    private void SetViewdRecipeOpacityBack()
+    public void SetViewdRecipeOpacityBack()
     {
         gridview.setVisibility(View.VISIBLE);
         int picId = getResources().getIdentifier(viewedRecipe.getImage(), "drawable", "com.izik.recipebook");
         Drawable recipePicture = getResources().getDrawable(picId);
         recipePicture.setAlpha(255);
         viewedRecipe = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            //if showRecipeDetails
+            if(viewedRecipe != null)
+            {
+                //if we showed recipe from myRecipes
+                if(count == 1) {
+                    SetViewdRecipeOpacityBack();
+                    ReturnToMainPage();
+                }
+                //if we showed from Favorites Or Browse Or Suggest
+                else
+                {
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.FragmentsFrameLayer);
+                    // checking which fragment is it
+                    try {
+                        if (fragment instanceof BackButton) {
+                            ((BackButton) fragment).onFragmentResume();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+
+
+                }
+            }
+
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+
     }
 
     private void ShowFavorites()
