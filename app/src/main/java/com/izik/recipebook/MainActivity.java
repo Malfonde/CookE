@@ -72,14 +72,16 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         switch (item.getItemId())
         {
-            case android.R.id.home:
+            case android.R.id.home: {
                 mDrawer.openDrawer(GravityCompat.START);
-                return true;
-            /*case R.id.add_recipe_menu_button:
+                //return true;
+                break;
+            }
+            case R.id.add_recipe_menu_button:
             {
                addRecipe();
                 break;
-            }*/
+            }
             case R.id.edit_recipe_menu_button:
             {
                 EditRecipe(this.viewedRecipe);
@@ -107,8 +109,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             }*/
             default:
                 ReturnToMainPage();
-                //break;
-                return super.onOptionsItemSelected(item);
+                break;
         }
 
         // if we viewd a recipeDetails fragment, we need to change the picture's opacity back
@@ -118,9 +119,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         }
 
-        if (drawerToggle.onOptionsItemSelected(item)) {
+        /*if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -253,6 +254,10 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
                 break;
         }
 
+        if (viewedRecipe != null)
+        {
+            SetViewdRecipeOpacityBack();
+        }
         /*try {
             fragment = (Fragment)fragmentClass.newInstance();
         } catch (Exception e) {
@@ -304,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
     private void ShowRecipeDetails(Recipe recipe)
     {
+        gridview.setVisibility(View.INVISIBLE);
         RecipeViewDetailsFragment fragment = new RecipeViewDetailsFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("IngredientsListObject", recipe.getIngrediants());
@@ -420,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
     private void SetViewdRecipeOpacityBack()
     {
+        gridview.setVisibility(View.VISIBLE);
         int picId = getResources().getIdentifier(viewedRecipe.getImage(), "drawable", "com.izik.recipebook");
         Drawable recipePicture = getResources().getDrawable(picId);
         recipePicture.setAlpha(255);
