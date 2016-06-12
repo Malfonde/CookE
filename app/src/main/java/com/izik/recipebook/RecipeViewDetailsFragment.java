@@ -72,10 +72,6 @@ public class RecipeViewDetailsFragment extends Fragment {
       //  recipeName.setText(recipe.getName());
         pager = (ViewPager) view.findViewById(R.id.recipeDetailsTabsPager);
 
-
-
-
-
         recipeDetailsTabsAdapter = new RecipeDetailsTabsPagerAdapter(getActivity().getSupportFragmentManager(),recipe);
         pager.setAdapter(recipeDetailsTabsAdapter);
         setBackgroundImagesOpacity(40);
