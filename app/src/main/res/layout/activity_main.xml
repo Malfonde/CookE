@@ -11,11 +11,15 @@
     android:textColor="#666666"
     >
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.izik.recipebook.MainActivity">
+
+
+
     <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"> -->
 
     <!-- The ActionBar displayed at the top -->
@@ -68,6 +72,8 @@
         android:id="@+id/FragmentsFrameLayer"
         android:layout_below="@+id/toolbar">
     </FrameLayout>
+
+
 </RelativeLayout>
 
 <!-- The navigation drawer that comes from the left -->
