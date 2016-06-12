@@ -2,7 +2,6 @@ package com.izik.recipebook;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -98,9 +97,6 @@ public class BrowseRecipesFragment extends Fragment implements BackButton
         input_browseRecipes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.toString().compareTo("") == 0) {
-                    SetGridView(s.toString());
-                }
             }
 
             @Override
@@ -110,24 +106,11 @@ public class BrowseRecipesFragment extends Fragment implements BackButton
 
             @Override
             public void afterTextChanged(Editable s) {
-                SetGridView(s.toString());
             }
         });
 
         registerForContextMenu(gridview);
-       // setBackgroundImagesOpacity();
     }
-
-    /*private void setBackgroundImagesOpacity()
-    {
-        Drawable golden_hearts_bg = getResources().getDrawable(R.drawable.search_food_bg);
-
-        // setting the opacity (alpha)
-        golden_hearts_bg.setAlpha(40);
-
-        // setting the images on the ImageViews
-        getView().findViewById(R.id.BrowseGridViewContainer).setBackground(golden_hearts_bg);
-    }*/
 
     private void SetGridView(String expression)
     {

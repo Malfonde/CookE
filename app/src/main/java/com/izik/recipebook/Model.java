@@ -1,17 +1,8 @@
 package com.izik.recipebook;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.izik.recipebook.DAL.NewModel;
-import com.parse.DeleteCallback;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Model

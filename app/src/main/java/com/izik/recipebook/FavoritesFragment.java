@@ -70,9 +70,6 @@ public class FavoritesFragment extends Fragment implements BackButton
         input_browseFavortieRecipes.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (s.toString().compareTo("") == 0) {
-                    SetGridView(s.toString());
-                }
             }
 
             @Override
@@ -82,24 +79,12 @@ public class FavoritesFragment extends Fragment implements BackButton
 
             @Override
             public void afterTextChanged(Editable s) {
-                SetGridView(s.toString());
             }
         });
 
         registerForContextMenu(gridview);
-        //setBackgroundImagesOpacity();
+
     }
-
-    /*private void setBackgroundImagesOpacity()
-    {
-        Drawable golden_hearts_bg = getResources().getDrawable(R.drawable.heart_pizza_bg);
-
-        // setting the opacity (alpha)
-        golden_hearts_bg.setAlpha(30);
-
-        // setting the images on the ImageViews
-        getView().findViewById(R.id.BrowseGridViewContainer).setBackground(golden_hearts_bg);
-    }*/
 
     private void SetGridView(String expression)
     {
