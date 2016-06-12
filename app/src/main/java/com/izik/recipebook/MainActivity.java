@@ -4,16 +4,14 @@ import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-//import android.support.v4.app.FragmentActivity;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,13 +20,12 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
-import android.support.v4.widget.DrawerLayout;
-
 import com.izik.recipebook.DAL.NewModel;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
-
 import java.util.ArrayList;
 import java.util.Properties;
+
+
 
 public class MainActivity extends AppCompatActivity implements AddRecipeFragment.OnFragmentInteractionListener,
         IngredientsFragment.OnFragmentInteractionListener, RecipeViewDetailsFragment.OnFragmentInteractionListener, RecipeDescriptionTabFragment.OnFragmentInteractionListener,
@@ -210,7 +207,11 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         // Create a new fragment and specify the fragment to show based on nav item clicked
         //Fragment fragment = null;
         //Class fragmentClass;
-       switch(menuItem.getItemId()) {
+       switch(menuItem.getItemId())
+       {
+           case R.id.nav_login_button:
+               LoginToFB();
+               break;
            case R.id.nav_my_recipes:
                ReturnToMainPage();
                break;
@@ -248,6 +249,14 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
+    }
+
+    private void LoginToFB()
+    {
+        facebook_login fragment = new facebook_login();
+        final Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
@@ -437,8 +446,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
                     {
 
                     }
-
-
                 }
             }
 
