@@ -115,10 +115,10 @@ public class BrowseRecipesFragment extends Fragment
         });
 
         registerForContextMenu(gridview);
-        setBackgroundImagesOpacity();
+       // setBackgroundImagesOpacity();
     }
 
-    private void setBackgroundImagesOpacity()
+    /*private void setBackgroundImagesOpacity()
     {
         Drawable golden_hearts_bg = getResources().getDrawable(R.drawable.search_food_bg);
 
@@ -127,7 +127,7 @@ public class BrowseRecipesFragment extends Fragment
 
         // setting the images on the ImageViews
         getView().findViewById(R.id.BrowseGridViewContainer).setBackground(golden_hearts_bg);
-    }
+    }*/
 
     private void SetGridView(String expression)
     {
