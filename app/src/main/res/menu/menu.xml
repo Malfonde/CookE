@@ -59,13 +59,6 @@
         android:title="suggested recipes"
         android:visible="true"
         />-->
-
-    <item android:id="@+id/search"
-        android:title="@string/app_name"
-        android:icon="@drawable/search"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
-
     <item
         android:id="@+id/confirm_button"
         android:icon="@drawable/confirm"
