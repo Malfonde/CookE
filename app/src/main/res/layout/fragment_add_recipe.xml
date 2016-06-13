@@ -38,7 +38,7 @@
                 />
 
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="450dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/input_name"
                 android:text=""
@@ -53,8 +53,8 @@
             >
 
             <ImageButton
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:id="@+id/PickRecipePicture"
                 android:scaleType="fitXY"
                 android:background="@drawable/add_image"
@@ -75,7 +75,7 @@
                 android:textSize="25dp"/>
 
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="450dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/input_description"
                 android:text=""
@@ -84,7 +84,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +96,8 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp">
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -113,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="20dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +123,7 @@
                         android:textSize="25dp"/>
 
                     <EditText
-                        android:layout_width="280dp"
+                        android:layout_width="580dp"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="true"
                         android:id="@+id/input_CookingInstructions"
@@ -139,7 +141,7 @@
                />
 
             <EditText
-                android:layout_width="280dp"
+                android:layout_width="580dp"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="true"
                 android:id="@+id/input_ServingInstructions"

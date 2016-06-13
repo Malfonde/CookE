@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         });
         registerForContextMenu(gridview);
 
-        setBackgroundImagesOpacity();
+        //setBackgroundImagesOpacity();
     }
 
     // Drawer stuff
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
     }
 
 
-    private void setBackgroundImagesOpacity()
+    /*private void setBackgroundImagesOpacity()
     {
         Drawable bowl_spoon_bg = getResources().getDrawable(R.drawable.bake_bg);
 
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
         // setting the images on the ImageViews
         //findViewById(R.id.searchMainContainer).setBackground(bowl_spoon_bg);
-    }
+    }*/
 
     private void ShowRecipeDetails(Recipe recipe)
     {
