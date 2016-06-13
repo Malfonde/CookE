@@ -3,6 +3,7 @@ package com.izik.recipebook;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,12 +21,23 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.izik.recipebook.DAL.NewModel;
+import com.izik.recipebook.ServerSideHandlers.ABOUT_HELP;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
 import java.util.ArrayList;
 import java.util.Properties;
 
-
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 public class MainActivity extends AppCompatActivity implements AddRecipeFragment.OnFragmentInteractionListener,
         IngredientsFragment.OnFragmentInteractionListener, RecipeViewDetailsFragment.OnFragmentInteractionListener, RecipeDescriptionTabFragment.OnFragmentInteractionListener,
@@ -58,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         menu.findItem(R.id.confirm_button).setVisible(false);
         optionsMenu = menu;
         return true;
+    }
+
+    //Facebook SDK initialize
+    protected void facebookSDKInitialize() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        CallbackManager callbackManager = CallbackManager.Factory.create();
+
     }
 
     @Override
@@ -139,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        facebookSDKInitialize();
 
         //Drawer settings
         // Set a Toolbar to replace the ActionBar.
@@ -227,6 +249,12 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             case R.id.nav_favorites:
                 ShowFavorites();
                 break;
+           case R.id.nav_help:
+               ShowHelp();
+               break;
+           case R.id.nav_about:
+               ShowAbout();
+               break;
             default:
                 ReturnToMainPage();
                 break;
@@ -328,6 +356,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             } else if (menuItemName.compareTo("Edit") == 0) {
                 EditRecipe(User.getUserRecipes().get(info.position));
             }
+            else if (menuItemName.compareTo("Share") == 0) {
+                ShareRecipe(User.getUserRecipes().get(info.position));
+            }
 
             return true;
         }
@@ -335,6 +366,17 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         {
             return false;
         }
+    }
+
+    //Recipe sub-menu share option
+    private void ShareRecipe(Recipe recipe) {
+        ShareDialog shareDialog = new ShareDialog(this);// intialize facebook shareDialog.
+        ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                .setContentTitle(recipe.getName())
+                //.setImageUrl(Uri.parse("http://www.clipartpanda.com/clipart_images/healty-food-fruit-clip-art-2555723"))
+                //.setContentDescription("Recipe description")
+                .setContentUrl(Uri.parse("https://drive.google.com/open?id=0B8lbtT7F2gffMmE3ME10bXFjSWM")).build();
+        shareDialog.show(linkContent);  // Show facebook ShareDialog
     }
 
     private void EditRecipe(Recipe recipe)
@@ -478,6 +520,23 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         ShowFragment(fragment);
     }
 
+    private void ShowHelp()
+    {
+        AboutHelpFragment fragment = new AboutHelpFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString("AboutHelp", ABOUT_HELP.HELP.toString());
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
+    }
+
+    private void ShowAbout()
+    {
+        AboutHelpFragment fragment = new AboutHelpFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString("AboutHelp", ABOUT_HELP.ABOUT.toString());
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
+    }
 
     private void SuggestRecipes()
     {

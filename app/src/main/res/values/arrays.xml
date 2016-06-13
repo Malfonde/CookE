@@ -17,6 +17,7 @@
     <string-array name="longClickRecipeMenu">
         <item>Edit</item>
         <item>Delete</item>
+        <item>Share</item>
     </string-array>
     <string-array name="longClickBrowseRecipesMenu">
         <item>"Add/Remove to favorites"</item>

@@ -61,7 +61,7 @@ public class facebook_login extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("email,publish_actions");
         loginButton.setFragment(this);
         getLoginDetails(loginButton);
     }

@@ -116,7 +116,16 @@ public class NewModel
     public ArrayList<Recipe> GetAllUsersRecipesWhoDoesNotBelongToThisUser(String id)
     {
         ServerRequest serverRequest = new ServerRequest();
-        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getAllRecipesWhoDoesntBelongToThisUser", new JSONObject());
+
+        JSONObject jsonId = new JSONObject();
+
+        try {
+            jsonId.put("userID", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject json = serverRequest.getJSON("http://193.106.55.47:8080/getAllRecipesWhoDoesntBelongToThisUser", jsonId);
         ArrayList<Recipe> Results = new ArrayList();
         try {
             JSONArray jar = json.getJSONArray("Recipes");

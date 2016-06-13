@@ -16,11 +16,12 @@
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-        <!--provider android:authorities="com.facebook.app.FacebookContentProvider1711805769072592"
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1711805769072592"
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/-->
+            android:exported="true"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
