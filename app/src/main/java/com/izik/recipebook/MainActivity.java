@@ -212,6 +212,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
            case R.id.nav_login_button:
                LoginToFB();
                break;
+           case R.id.nav_suggestions:
+               SuggestRecipes();
+               break;
            case R.id.nav_my_recipes:
                ReturnToMainPage();
                break;

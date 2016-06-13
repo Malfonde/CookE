@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class BrowseRecipesFragment extends Fragment implements BackButton
 {
     private static final int UNIQUE_BROWSE_FRAGMENT_GROUP_ID = 2;
-    private static final String TITLE = "Browsing";
+    private static String TITLE = "Browsing";
     private OnFragmentInteractionListener mListener;
     private ArrayList<Recipe> allRecipes;
     private GridView gridview;
@@ -73,6 +73,7 @@ public class BrowseRecipesFragment extends Fragment implements BackButton
         switch (BrowseSpesification)
         {
             case SUGGESTED_RECIPES:
+                getActivity().setTitle("Suggested Recepies");
                 allRecipes = imageAdapter.setRecommandedRecipes();
                 break;
             case ALL_BUT_GIVEN_USER:

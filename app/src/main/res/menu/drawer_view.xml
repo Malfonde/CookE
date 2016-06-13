@@ -21,6 +21,10 @@
             android:id="@+id/nav_favorites"
             android:icon="@drawable/favorites"
             android:title="Favorites" />
+        <item
+            android:id="@+id/nav_suggestions"
+            android:icon="@drawable/suggestions_icon"
+            android:title="Suggested Recepies" />
 
         <item
             android:id="@+id/nav_login_button"
