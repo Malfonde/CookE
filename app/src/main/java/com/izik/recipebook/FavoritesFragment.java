@@ -3,6 +3,7 @@ package com.izik.recipebook;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -131,5 +132,10 @@ public class FavoritesFragment extends Fragment implements BackButton
         getActivity().setTitle(TITLE);
         ((MainActivity)getActivity()).SetViewdRecipeOpacityBack();
 
+    }
+
+    @Override
+    public void setTitle() {
+        getActivity().setTitle(TITLE);
     }
 }

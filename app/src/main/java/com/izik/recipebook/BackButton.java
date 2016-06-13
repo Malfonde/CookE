@@ -6,4 +6,5 @@ package com.izik.recipebook;
 public interface BackButton
 {
     void onFragmentResume();
+    void setTitle();
 }

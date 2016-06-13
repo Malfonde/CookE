@@ -243,15 +243,6 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         {
             SetViewdRecipeOpacityBack();
         }
-        /*try {
-            fragment = (Fragment)fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        // Insert the fragment by replacing any existing fragment
-       /* FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();*/
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -396,12 +387,9 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
 
     private void ShowFragment(android.support.v4.app.Fragment fragment)
     {
-        /*getSupportFragmentManager().beginTransaction()
-                .replace(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();*/
-
         //findViewById(R.id.searchMainContainer).setVisibility(View.INVISIBLE);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.FragmentsFrameLayer, fragment).commit();
+        fragmentManager.beginTransaction().add(R.id.FragmentsFrameLayer, fragment).addToBackStack("currentShowedFragment").commit();
 
         findViewById(R.id.FragmentsFrameLayer).setVisibility(View.VISIBLE);
     }
@@ -435,25 +423,40 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             super.onBackPressed();
         } else {
             //if showRecipeDetails
-            if(viewedRecipe != null)
-            {
+            if (viewedRecipe != null) {
                 //if we showed recipe from myRecipes
-                if(count == 1) {
+                if (count == 1) {
                     SetViewdRecipeOpacityBack();
                     ReturnToMainPage();
                 }
                 //if we showed from Favorites Or Browse Or Suggest
-                else
-                {
+                else {
                     Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.FragmentsFrameLayer);
                     // checking which fragment is it
                     try {
                         if (fragment instanceof BackButton) {
                             ((BackButton) fragment).onFragmentResume();
                         }
+                    } catch (Exception e) {
+
                     }
-                    catch(Exception e)
-                    {
+                }
+            }
+            else
+            {
+                if(count == 1)
+                {
+                   // SetViewdRecipeOpacityBack();
+                    ReturnToMainPage();
+                }
+                else {
+                    // we are going back to the window that we had came from, so we need to set the title back
+                    Fragment fragment = getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getBackStackEntryCount() - 2);
+                    try {
+                        if (fragment instanceof BackButton) {
+                            ((BackButton) fragment).setTitle();
+                        }
+                    } catch (Exception e) {
 
                     }
                 }
