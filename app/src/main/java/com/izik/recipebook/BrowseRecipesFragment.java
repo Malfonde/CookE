@@ -231,6 +231,11 @@ public class BrowseRecipesFragment extends Fragment implements BackButton
         getView().findViewById(R.id.BrowseRecipesFragmentsFrameLayer).setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void setTitle() {
+        getActivity().setTitle(TITLE);
+    }
+
     public interface OnFragmentInteractionListener {
 
         void onBrowseRecipeFragmentInteraction(Recipe recipe);
