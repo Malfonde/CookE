@@ -36,9 +36,13 @@
         android:id="@+id/menu_bottom">
         <item
             android:icon="@drawable/help"
-            android:title="Help" />
+            android:title="Help"
+            android:id="@+id/nav_help"
+            />
         <item
             android:icon="@drawable/about"
-            android:title="About" />
+            android:title="About"
+            android:id="@+id/nav_about"
+            />
     </group>
 </menu>

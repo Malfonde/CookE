@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.izik.recipebook.DAL.NewModel;
+import com.izik.recipebook.ServerSideHandlers.ABOUT_HELP;
 import com.izik.recipebook.ServerSideHandlers.BROWSE_RECIPE_SPESIFY;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -248,6 +249,12 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
             case R.id.nav_favorites:
                 ShowFavorites();
                 break;
+           case R.id.nav_help:
+               ShowHelp();
+               break;
+           case R.id.nav_about:
+               ShowAbout();
+               break;
             default:
                 ReturnToMainPage();
                 break;
@@ -513,6 +520,23 @@ public class MainActivity extends AppCompatActivity implements AddRecipeFragment
         ShowFragment(fragment);
     }
 
+    private void ShowHelp()
+    {
+        AboutHelpFragment fragment = new AboutHelpFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString("AboutHelp", ABOUT_HELP.HELP.toString());
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
+    }
+
+    private void ShowAbout()
+    {
+        AboutHelpFragment fragment = new AboutHelpFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putString("AboutHelp", ABOUT_HELP.ABOUT.toString());
+        fragment.setArguments(bundle);
+        ShowFragment(fragment);
+    }
 
     private void SuggestRecipes()
     {
